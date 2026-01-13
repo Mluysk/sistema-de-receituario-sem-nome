@@ -37,6 +37,15 @@
                     <h3>Itens de custo</h3>
                     <button type="button" class="btn ghost" id="add-cost-item">+ Adicionar item</button>
                 </div>
+                <div class="preset-costs">
+                    <span class="muted-text">Sugestões rápidas:</span>
+                    <button type="button" class="btn small preset-btn" data-label="Água e luz" data-tipo="percentual" data-base="custo">Água e luz</button>
+                    <button type="button" class="btn small preset-btn" data-label="Imposto" data-tipo="percentual" data-base="venda">Imposto</button>
+                    <button type="button" class="btn small preset-btn" data-label="Sobre o valor" data-tipo="percentual" data-base="venda">Sobre o valor</button>
+                    <button type="button" class="btn small preset-btn" data-label="Sobre o custo bruto" data-tipo="percentual" data-base="custo">Sobre o custo bruto</button>
+                    <button type="button" class="btn small preset-btn" data-label="Taxa de cartão" data-tipo="percentual" data-base="venda">Taxa de cartão</button>
+                    <button type="button" class="btn small preset-btn" data-label="Lucro" data-tipo="percentual" data-base="venda">Lucro</button>
+                </div>
                 <div id="cost-items">
                     <?php foreach ($itens as $item): ?>
                         <div class="cost-item">

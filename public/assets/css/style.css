@@ -307,6 +307,14 @@ th, td {
     margin-bottom: 16px;
 }
 
+.preset-costs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+    align-items: center;
+}
+
 .input-with-unit {
     display: flex;
     align-items: center;
