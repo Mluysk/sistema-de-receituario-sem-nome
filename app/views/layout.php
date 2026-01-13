@@ -36,15 +36,6 @@ unset($_SESSION['flash_success'], $_SESSION['flash_error']);
                     </span>
                     Receitas
                 </a>
-                <a class="nav-link <?= $page === 'custos' ? 'active' : '' ?>" href="?page=custos">
-                    <span class="nav-icon">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <circle cx="12" cy="12" r="7" />
-                            <path d="M9 12h6M12 9v6" />
-                        </svg>
-                    </span>
-                    Custos
-                </a>
                 <a class="nav-link <?= $page === 'relatorios' ? 'active' : '' ?>" href="?page=relatorios">
                     <span class="nav-icon">
                         <svg viewBox="0 0 24 24" aria-hidden="true">
