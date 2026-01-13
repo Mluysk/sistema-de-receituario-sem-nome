@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const custoBase = document.getElementById('custo-base');
     const receituarioBody = document.getElementById('receituario-body');
     const receituarioNome = document.getElementById('receituario-nome');
+    const receitaTabs = document.querySelector('[data-tabs="receitas"]');
     const rendimentoRows = [
         document.getElementById('receituario-rendimento-1'),
         document.getElementById('receituario-rendimento-2'),
@@ -246,4 +247,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateTotals();
     updateReceituarioPreview();
+
+    function setActiveReceitaTab(tabName) {
+        document.querySelectorAll('[data-tabs="receitas"] .tab-button').forEach((btn) => {
+            btn.classList.toggle('active', btn.dataset.tab === tabName);
+        });
+        document.querySelectorAll('#tab-cadastro, #tab-receituario').forEach((content) => {
+            content.classList.toggle('active', content.id === `tab-${tabName}`);
+        });
+    }
+
+    if (receitaTabs) {
+        receitaTabs.querySelectorAll('.tab-button').forEach((button) => {
+            button.addEventListener('click', () => setActiveReceitaTab(button.dataset.tab));
+        });
+    }
 });

@@ -1,6 +1,12 @@
-<div class="card">
-    <h2>Cadastro de receita</h2>
-    <form method="post" action="?page=receitas&action=store" id="recipe-form">
+<div class="tabs" data-tabs="receitas">
+    <button type="button" class="tab-button active" data-tab="cadastro">Cadastro</button>
+    <button type="button" class="tab-button" data-tab="receituario">Receituário</button>
+</div>
+
+<div class="tab-content active" id="tab-cadastro">
+    <div class="card">
+        <h2>Cadastro de receita</h2>
+        <form method="post" action="?page=receitas&action=store" id="recipe-form">
         <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
         <input type="hidden" name="id" id="receita-id">
         <div class="grid-2">
@@ -92,54 +98,57 @@
             <button type="submit" class="btn primary" id="btn-save-receita">Salvar receita</button>
             <button type="button" class="btn ghost" id="btn-cancel-receita" hidden>Cancelar edição</button>
         </div>
-    </form>
+        </form>
+    </div>
 </div>
 
-<div class="card receituario-card">
-    <div class="receituario-header">
-        <h2>Receituários da JP</h2>
-        <h3 id="receituario-nome">Nome da receita</h3>
-    </div>
-    <div class="table-wrapper">
-        <table class="receituario-table">
-            <thead>
-                <tr>
-                    <th rowspan="2">Ingredientes</th>
-                    <th colspan="2">Quantidades</th>
-                    <th colspan="2">Quantidades</th>
-                    <th colspan="2">Quantidades</th>
-                </tr>
-                <tr>
-                    <th>1</th>
-                    <th>Kg</th>
-                    <th>2</th>
-                    <th>Kg</th>
-                    <th>3</th>
-                    <th>Kg</th>
-                </tr>
-            </thead>
-            <tbody id="receituario-body"></tbody>
-            <tfoot>
-                <tr>
-                    <td><strong>Rendimento de receita</strong></td>
-                    <td id="receituario-rendimento-1">0,000</td>
-                    <td>KG</td>
-                    <td id="receituario-rendimento-2">0,000</td>
-                    <td>KG</td>
-                    <td id="receituario-rendimento-3">0,000</td>
-                    <td>KG</td>
-                </tr>
-                <tr>
-                    <td><strong>Quantidade de padrão</strong></td>
-                    <td>1</td>
-                    <td>PD</td>
-                    <td>2</td>
-                    <td>PD</td>
-                    <td>3</td>
-                    <td>PD</td>
-                </tr>
-            </tfoot>
-        </table>
+<div class="tab-content" id="tab-receituario">
+    <div class="card receituario-card">
+        <div class="receituario-header">
+            <h2>Receituários da JP</h2>
+            <h3 id="receituario-nome">Nome da receita</h3>
+        </div>
+        <div class="table-wrapper">
+            <table class="receituario-table">
+                <thead>
+                    <tr>
+                        <th rowspan="2">Ingredientes</th>
+                        <th colspan="2">Quantidades</th>
+                        <th colspan="2">Quantidades</th>
+                        <th colspan="2">Quantidades</th>
+                    </tr>
+                    <tr>
+                        <th>1</th>
+                        <th>Kg</th>
+                        <th>2</th>
+                        <th>Kg</th>
+                        <th>3</th>
+                        <th>Kg</th>
+                    </tr>
+                </thead>
+                <tbody id="receituario-body"></tbody>
+                <tfoot>
+                    <tr>
+                        <td><strong>Rendimento de receita</strong></td>
+                        <td id="receituario-rendimento-1">0,000</td>
+                        <td>KG</td>
+                        <td id="receituario-rendimento-2">0,000</td>
+                        <td>KG</td>
+                        <td id="receituario-rendimento-3">0,000</td>
+                        <td>KG</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Quantidade de padrão</strong></td>
+                        <td>1</td>
+                        <td>PD</td>
+                        <td>2</td>
+                        <td>PD</td>
+                        <td>3</td>
+                        <td>PD</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
     </div>
 </div>
 
