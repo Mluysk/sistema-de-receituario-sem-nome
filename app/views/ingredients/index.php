@@ -19,7 +19,12 @@
             </div>
             <div class="form-group">
                 <label>Unidade padrão*</label>
-                <input type="text" name="unidade_padrao" id="unidade-padrao" placeholder="kg, un, L" required>
+                <select name="unidade_padrao" id="unidade-padrao" required>
+                    <option value="">Selecione</option>
+                    <?php foreach ($unidades as $unidade): ?>
+                        <option value="<?= htmlspecialchars($unidade['nome_unidade']) ?>"><?= htmlspecialchars($unidade['nome_unidade']) ?></option>
+                    <?php endforeach; ?>
+                </select>
             </div>
             <div class="form-group">
                 <label>Peso padrão (g)</label>

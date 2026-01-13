@@ -12,6 +12,13 @@ CREATE TABLE ingredientes (
     data_cadastro DATETIME NOT NULL
 ) ENGINE=InnoDB;
 
+CREATE TABLE unidades_padrao (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome_unidade VARCHAR(20) NOT NULL,
+    descricao VARCHAR(255) NULL,
+    data_cadastro DATETIME NOT NULL
+) ENGINE=InnoDB;
+
 CREATE TABLE ingrediente_precos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     ingrediente_id INT NOT NULL,

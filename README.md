@@ -22,6 +22,7 @@ Projeto em PHP 8 + MySQL + HTML/CSS/JS, sem frameworks pesados e pronto para XAM
 - Dashboard moderno (dark) com menu lateral.
 - CRUD de ingredientes com histórico de preços em modal.
 - Cadastro de receitas com itens dinâmicos e cálculo automático de custos.
+- Configurações com cadastro de unidades padrão para seleção nos ingredientes.
 - Perfis de custos com percentuais e valores fixos configuráveis.
 - Relatórios com exportação CSV.
 - Segurança básica: PDO + validação + CSRF simples.

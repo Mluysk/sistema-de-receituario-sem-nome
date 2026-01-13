@@ -10,6 +10,7 @@ require_once __DIR__ . '/../app/controllers/IngredientController.php';
 require_once __DIR__ . '/../app/controllers/RecipeController.php';
 require_once __DIR__ . '/../app/controllers/CostController.php';
 require_once __DIR__ . '/../app/controllers/ReportController.php';
+require_once __DIR__ . '/../app/controllers/ConfigController.php';
 
 $config['app']['base_url'] = base_url();
 $db = new Database($config['db']);
@@ -77,6 +78,20 @@ switch ($page) {
         $controller = new ReportController($pdo);
         if ($action === 'export_csv') {
             $controller->exportCsv();
+        } else {
+            $controller->index();
+        }
+        break;
+    case 'configuracoes':
+        $controller = new ConfigController($pdo);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if ($action === 'store') {
+                $controller->store();
+            } elseif ($action === 'update') {
+                $controller->update();
+            } elseif ($action === 'delete') {
+                $controller->destroy();
+            }
         } else {
             $controller->index();
         }

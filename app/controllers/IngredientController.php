@@ -18,9 +18,11 @@ class IngredientController
             $stmt = $this->pdo->query('SELECT * FROM ingredientes ORDER BY nome_ingrediente');
         }
         $ingredientes = $stmt->fetchAll();
+        $unidades = $this->pdo->query('SELECT nome_unidade FROM unidades_padrao ORDER BY nome_unidade')->fetchAll();
 
         View::render('ingredients/index', [
             'ingredientes' => $ingredientes,
+            'unidades' => $unidades,
             'search' => $search,
         ]);
     }

@@ -22,6 +22,7 @@ unset($_SESSION['flash_success'], $_SESSION['flash_error']);
                 <a class="nav-link <?= $page === 'receitas' ? 'active' : '' ?>" href="?page=receitas">Receitas</a>
                 <a class="nav-link <?= $page === 'custos' ? 'active' : '' ?>" href="?page=custos">Custos</a>
                 <a class="nav-link <?= $page === 'relatorios' ? 'active' : '' ?>" href="?page=relatorios">Relatórios</a>
+                <a class="nav-link <?= $page === 'configuracoes' ? 'active' : '' ?>" href="?page=configuracoes">Configurações</a>
             </nav>
         </aside>
         <main class="main">
@@ -56,6 +57,9 @@ unset($_SESSION['flash_success'], $_SESSION['flash_error']);
     <?php endif; ?>
     <?php if ($page === 'custos'): ?>
         <script src="<?= $baseUrl ?>/assets/js/costs.js"></script>
+    <?php endif; ?>
+    <?php if ($page === 'configuracoes'): ?>
+        <script src="<?= $baseUrl ?>/assets/js/config.js"></script>
     <?php endif; ?>
 </body>
 </html>
