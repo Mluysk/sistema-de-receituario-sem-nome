@@ -95,6 +95,54 @@
     </form>
 </div>
 
+<div class="card receituario-card">
+    <div class="receituario-header">
+        <h2>Receituários da JP</h2>
+        <h3 id="receituario-nome">Nome da receita</h3>
+    </div>
+    <div class="table-wrapper">
+        <table class="receituario-table">
+            <thead>
+                <tr>
+                    <th rowspan="2">Ingredientes</th>
+                    <th colspan="2">Quantidades</th>
+                    <th colspan="2">Quantidades</th>
+                    <th colspan="2">Quantidades</th>
+                </tr>
+                <tr>
+                    <th>1</th>
+                    <th>Kg</th>
+                    <th>2</th>
+                    <th>Kg</th>
+                    <th>3</th>
+                    <th>Kg</th>
+                </tr>
+            </thead>
+            <tbody id="receituario-body"></tbody>
+            <tfoot>
+                <tr>
+                    <td><strong>Rendimento de receita</strong></td>
+                    <td id="receituario-rendimento-1">0,000</td>
+                    <td>KG</td>
+                    <td id="receituario-rendimento-2">0,000</td>
+                    <td>KG</td>
+                    <td id="receituario-rendimento-3">0,000</td>
+                    <td>KG</td>
+                </tr>
+                <tr>
+                    <td><strong>Quantidade de padrão</strong></td>
+                    <td>1</td>
+                    <td>PD</td>
+                    <td>2</td>
+                    <td>PD</td>
+                    <td>3</td>
+                    <td>PD</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
 <div class="card">
     <div class="list-header">
         <h2>Receitas cadastradas</h2>

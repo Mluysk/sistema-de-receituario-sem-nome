@@ -10,6 +10,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const custoExtraFixo = document.getElementById('custo-extra-fixo');
     const custoExtraPercentual = document.getElementById('custo-extra-percentual');
     const custoBase = document.getElementById('custo-base');
+    const receituarioBody = document.getElementById('receituario-body');
+    const receituarioNome = document.getElementById('receituario-nome');
+    const rendimentoRows = [
+        document.getElementById('receituario-rendimento-1'),
+        document.getElementById('receituario-rendimento-2'),
+        document.getElementById('receituario-rendimento-3'),
+    ];
     const perfilFields = {
         agua_luz: document.getElementById('perfil-agua-luz'),
         imposto: document.getElementById('perfil-imposto'),
@@ -83,6 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
             valorGramaSpan.textContent = `R$ ${formatToMoney(valorGrama)}`;
             custoSpan.textContent = `R$ ${formatToMoney(custo)}`;
             updateTotals();
+            updateReceituarioPreview();
         }
 
         select.addEventListener('change', updateItemCost);
@@ -116,8 +124,58 @@ document.addEventListener('DOMContentLoaded', () => {
         custoUnidade.textContent = formatToMoney(custoUnit);
     }
 
+    function updateReceituarioPreview() {
+        if (!receituarioBody) {
+            return;
+        }
+        const nome = document.getElementById('nome-receita')?.value || 'Nome da receita';
+        if (receituarioNome) {
+            receituarioNome.textContent = nome.toUpperCase();
+        }
+
+        const rows = [];
+        let totalGramas = 0;
+        itemsContainer.querySelectorAll('tr').forEach((row) => {
+            const select = row.querySelector('select');
+            const gramasInput = row.querySelector('input[name=\"gramas_usadas[]\"]');
+            const ingrediente = select ? select.options[select.selectedIndex]?.textContent : '';
+            const gramas = parseMoney(gramasInput?.value || '0');
+            totalGramas += gramas;
+            const kg = gramas / 1000;
+            rows.push({
+                ingrediente,
+                valores: [kg, kg * 2, kg * 3],
+            });
+        });
+
+        receituarioBody.innerHTML = rows
+            .map((row) => {
+                const cells = row.valores
+                    .map((valor) => `<td>${formatNumber(valor, 3)}</td><td>KG</td>`)
+                    .join('');
+                return `<tr><td>${row.ingrediente || '-'}</td>${cells}</tr>`;
+            })
+            .join('');
+
+        const rendimentoKg = totalGramas / 1000;
+        const rendimentos = [rendimentoKg, rendimentoKg * 2, rendimentoKg * 3];
+        rendimentos.forEach((valor, index) => {
+            if (rendimentoRows[index]) {
+                rendimentoRows[index].textContent = formatNumber(valor, 3);
+            }
+        });
+    }
+
+    function formatNumber(value, decimals) {
+        return Number(value || 0).toLocaleString('pt-BR', {
+            minimumFractionDigits: decimals,
+            maximumFractionDigits: decimals,
+        });
+    }
+
     addItemButton.addEventListener('click', () => createRow());
     rendimentoInput.addEventListener('input', updateTotals);
+    document.getElementById('nome-receita')?.addEventListener('input', updateReceituarioPreview);
 
     document.querySelectorAll('[data-edit]').forEach((button) => {
         button.addEventListener('click', async () => {
@@ -150,6 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
         itemsContainer.innerHTML = '';
         createRow();
         updateTotals();
+        updateReceituarioPreview();
         cancelButton.hidden = true;
     });
 
@@ -186,4 +245,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     updateTotals();
+    updateReceituarioPreview();
 });
