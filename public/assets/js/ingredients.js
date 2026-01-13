@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const historyList = document.getElementById('history-list');
     const historyForm = document.getElementById('history-form');
     const historyIngredienteId = document.getElementById('history-ingrediente-id');
+    const historyIngredienteNome = document.getElementById('history-ingrediente-nome');
     const tabs = document.querySelector('[data-tabs="ingredientes"]');
     const unidadeSelect = document.getElementById('unidade-padrao');
     const pesoInput = document.getElementById('peso-padrao');
@@ -35,6 +36,20 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('ingrediente-id').value = '';
         cancelBtn.hidden = true;
         updatePesoPadrao();
+    });
+
+    document.querySelectorAll('[data-history]').forEach((button) => {
+        button.addEventListener('click', async () => {
+            const id = button.dataset.history;
+            historyIngredienteId.value = id;
+            if (historyIngredienteNome) {
+                historyIngredienteNome.value = button.dataset.nome || '';
+            }
+            if (modal) {
+                modal.classList.add('open');
+            }
+            await loadHistory(id);
+        });
     });
 
 

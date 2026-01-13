@@ -81,6 +81,7 @@
                             <td>
                                 <button type="button" class="btn small" data-edit='<?= json_encode($ingrediente) ?>'>Editar</button>
                                 <a class="btn small" href="?page=ingredientes&action=history_page&id=<?= $ingrediente['id'] ?>">Histórico</a>
+                                <button type="button" class="btn small ghost" data-history="<?= $ingrediente['id'] ?>" data-nome="<?= htmlspecialchars($ingrediente['nome_ingrediente']) ?>">Atualizar preço</button>
                                 <form method="post" action="?page=ingredientes&action=delete" class="inline">
                                     <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
                                     <input type="hidden" name="id" value="<?= $ingrediente['id'] ?>">
@@ -105,6 +106,14 @@
             <div id="history-list" class="history-list"></div>
             <form id="history-form" class="history-form">
                 <input type="hidden" name="ingrediente_id" id="history-ingrediente-id">
+                <div class="form-group">
+                    <label>Ingrediente</label>
+                    <input type="text" id="history-ingrediente-nome" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Peso base (g)</label>
+                    <input type="text" value="1000" readonly>
+                </div>
                 <div class="form-group">
                     <label>Novo preço (R$)</label>
                     <input type="text" name="preco_por_kg" class="mask-money" required>
