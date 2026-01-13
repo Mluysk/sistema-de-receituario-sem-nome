@@ -121,7 +121,9 @@
             <label>Perfil de custo</label>
             <select id="perfil-receita">
                 <?php foreach ($perfis as $perfil): ?>
-                    <option value="<?= $perfil['id'] ?>"><?= htmlspecialchars($perfil['nome']) ?></option>
+                    <option value="<?= $perfil['id'] ?>" <?= (int) ($perfilId ?? 0) === (int) $perfil['id'] ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($perfil['nome']) ?>
+                    </option>
                 <?php endforeach; ?>
             </select>
         </div>

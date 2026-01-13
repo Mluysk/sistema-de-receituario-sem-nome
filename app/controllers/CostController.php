@@ -39,6 +39,7 @@ class CostController
         }
         $stmt = $this->pdo->prepare('INSERT INTO custos_perfis (nome, data_cadastro) VALUES (?, NOW())');
         $stmt->execute([$nome]);
+        error_log('perfil_custos_salvo_nome=' . $nome);
         $_SESSION['flash_success'] = 'Perfil criado.';
         redirect('?page=custos');
     }
@@ -56,6 +57,7 @@ class CostController
         $stmt->execute([$nome, $id]);
 
         $this->saveItems($id);
+        error_log('perfil_custos_atualizado_id=' . $id . ' nome=' . $nome);
 
         $_SESSION['flash_success'] = 'Perfil atualizado.';
         redirect('?page=custos&perfil_id=' . $id);
@@ -102,6 +104,7 @@ class CostController
         $stmt = $this->pdo->prepare('SELECT * FROM custos_perfis WHERE id = ?');
         $stmt->execute([$id]);
         $perfil = $stmt->fetch();
+        error_log('perfil_custos_lido_id=' . $id);
         return $perfil ?: null;
     }
 

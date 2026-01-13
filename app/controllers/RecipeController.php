@@ -22,7 +22,7 @@ class RecipeController
             $receitas = $this->pdo->query('SELECT * FROM receitas ORDER BY data_cadastro DESC')->fetchAll();
         }
         $perfis = $this->pdo->query('SELECT * FROM custos_perfis ORDER BY nome')->fetchAll();
-        $perfilId = $perfis[0]['id'] ?? null;
+        $perfilId = $_SESSION['perfil_custos_id'] ?? ($perfis[0]['id'] ?? null);
 
         $receitaCustos = [];
         foreach ($receitas as $receita) {
@@ -36,6 +36,7 @@ class RecipeController
             'receitaCustos' => $receitaCustos,
             'percentConfig' => $this->getProfilePercents($perfilId),
             'search' => $search,
+            'perfilId' => $perfilId,
         ]);
     }
 
@@ -141,7 +142,7 @@ class RecipeController
         $valorKg = $totalKg > 0 ? $totalCusto / $totalKg : 0;
 
         $perfis = $this->pdo->query('SELECT * FROM custos_perfis ORDER BY nome')->fetchAll();
-        $perfilId = $perfis[0]['id'] ?? null;
+        $perfilId = $_SESSION['perfil_custos_id'] ?? ($perfis[0]['id'] ?? null);
         $percentConfig = $this->getProfilePercents($perfilId);
 
         View::render('recipes/view', [
@@ -159,6 +160,9 @@ class RecipeController
     {
         $id = (int) ($_GET['id'] ?? 0);
         $perfilId = (int) ($_GET['perfil_id'] ?? 0);
+        if ($perfilId <= 0) {
+            $perfilId = (int) ($_SESSION['perfil_custos_id'] ?? 0);
+        }
         header('Content-Type: application/json');
         echo json_encode($this->calculator->calculateRecipeCosts($id, $perfilId));
     }
@@ -166,6 +170,10 @@ class RecipeController
     public function profile(): void
     {
         $perfilId = (int) ($_GET['perfil_id'] ?? 0);
+        if ($perfilId > 0) {
+            $_SESSION['perfil_custos_id'] = $perfilId;
+        }
+        error_log('perfil_custos_lido_receitas=' . $perfilId);
         header('Content-Type: application/json');
         echo json_encode($this->getProfilePercents($perfilId));
     }
@@ -214,6 +222,7 @@ class RecipeController
         $stmt = $this->pdo->prepare('SELECT etiqueta, valor_percentual FROM custos_itens WHERE perfil_id = ? AND tipo = "percentual"');
         $stmt->execute([$perfilId]);
         $rows = $stmt->fetchAll();
+        error_log('perfil_custos_lido_receitas_percentuais=' . $perfilId . ' dados=' . json_encode($rows));
 
         $map = [
             'agua e luz' => 'agua_luz',

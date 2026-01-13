@@ -97,9 +97,15 @@ switch ($page) {
                 $controller->update();
             } elseif ($action === 'delete') {
                 $controller->destroy();
+            } elseif ($action === 'set_profile') {
+                $controller->setProfile();
             }
         } else {
-            $controller->index();
+            if ($action === 'perfil') {
+                $controller->profile();
+            } else {
+                $controller->index();
+            }
         }
         break;
     default:

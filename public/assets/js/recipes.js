@@ -243,9 +243,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     perfilSelect?.addEventListener('change', async () => {
         const perfilId = perfilSelect.value;
+        console.log('perfil_custos_id', perfilId);
         const rows = document.querySelectorAll('tr[data-receita-id]');
         const perfilResponse = await fetch(`?page=receitas&action=perfil&perfil_id=${perfilId}`);
         const perfilData = await perfilResponse.json();
+        console.log('custos_carregados', perfilData);
         Object.entries(perfilFields).forEach(([key, field]) => {
             if (!field) {
                 return;
@@ -259,6 +261,16 @@ document.addEventListener('DOMContentLoaded', () => {
             row.querySelector('.custo-total').textContent = formatToMoney(data.custo_total);
             row.querySelector('.preco-venda').textContent = formatToMoney(data.preco_venda);
             row.querySelector('.ganho').textContent = formatToMoney(data.ganho);
+        }
+        if (perfilId) {
+            localStorage.setItem('perfil_custos_id', String(perfilId));
+        }
+    });
+
+    window.addEventListener('storage', (event) => {
+        if (event.key === 'perfil_custos_id' && event.newValue && perfilSelect) {
+            perfilSelect.value = event.newValue;
+            perfilSelect.dispatchEvent(new Event('change'));
         }
     });
 
