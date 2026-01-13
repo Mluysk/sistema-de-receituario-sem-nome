@@ -37,20 +37,17 @@ document.addEventListener('DOMContentLoaded', () => {
         updatePesoPadrao();
     });
 
-    document.querySelectorAll('[data-history]').forEach((button) => {
-        button.addEventListener('click', async () => {
-            const id = button.dataset.history;
-            historyIngredienteId.value = id;
-            modal.classList.add('open');
-            await loadHistory(id);
-        });
-    });
 
-    closeHistory.addEventListener('click', () => {
-        modal.classList.remove('open');
-    });
+    if (closeHistory) {
+        closeHistory.addEventListener('click', () => {
+            modal.classList.remove('open');
+        });
+    }
 
     async function loadHistory(id) {
+        if (!historyList) {
+            return;
+        }
         historyList.innerHTML = 'Carregando...';
         const response = await fetch(`?page=ingredientes&action=history&id=${id}`);
         const data = await response.json();
@@ -69,20 +66,22 @@ document.addEventListener('DOMContentLoaded', () => {
             : '<p>Sem registros.</p>';
     }
 
-    historyForm.addEventListener('submit', async (event) => {
-        event.preventDefault();
-        const formData = new FormData(historyForm);
-        formData.append('csrf_token', csrfToken);
-        const response = await fetch('?page=ingredientes&action=add_price', {
-            method: 'POST',
-            body: formData,
+    if (historyForm) {
+        historyForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const formData = new FormData(historyForm);
+            formData.append('csrf_token', csrfToken);
+            const response = await fetch('?page=ingredientes&action=add_price', {
+                method: 'POST',
+                body: formData,
+            });
+            if (response.ok) {
+                await loadHistory(historyIngredienteId.value);
+                historyForm.reset();
+                window.location.reload();
+            }
         });
-        if (response.ok) {
-            await loadHistory(historyIngredienteId.value);
-            historyForm.reset();
-            window.location.reload();
-        }
-    });
+    }
 
     function setActiveTab(tabName) {
         document.querySelectorAll('.tab-button').forEach((btn) => {

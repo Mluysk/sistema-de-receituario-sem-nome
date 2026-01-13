@@ -106,6 +106,23 @@ class IngredientController
         echo json_encode($rows);
     }
 
+    public function historyPage(): void
+    {
+        $id = (int) ($_GET['id'] ?? 0);
+        $stmt = $this->pdo->prepare('SELECT * FROM ingredientes WHERE id = ?');
+        $stmt->execute([$id]);
+        $ingrediente = $stmt->fetch();
+
+        $stmt = $this->pdo->prepare('SELECT data_registro, preco_por_kg, fornecedor, observacao FROM ingrediente_precos WHERE ingrediente_id = ? ORDER BY data_registro DESC');
+        $stmt->execute([$id]);
+        $historico = $stmt->fetchAll();
+
+        View::render('ingredients/history', [
+            'ingrediente' => $ingrediente,
+            'historico' => $historico,
+        ]);
+    }
+
     public function addPrice(): void
     {
         verify_csrf($_POST['csrf_token'] ?? '');

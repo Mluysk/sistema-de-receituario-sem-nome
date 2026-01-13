@@ -35,6 +35,8 @@ switch ($page) {
         } else {
             if ($action === 'history') {
                 $controller->history();
+            } elseif ($action === 'history_page') {
+                $controller->historyPage();
             } else {
                 $controller->index();
             }

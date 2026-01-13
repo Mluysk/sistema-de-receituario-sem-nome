@@ -80,7 +80,7 @@
                             <td><?= format_money($ingrediente['preco_por_kg'] / 1000) ?></td>
                             <td>
                                 <button type="button" class="btn small" data-edit='<?= json_encode($ingrediente) ?>'>Editar</button>
-                                <button type="button" class="btn small" data-history="<?= $ingrediente['id'] ?>">Histórico</button>
+                                <a class="btn small" href="?page=ingredientes&action=history_page&id=<?= $ingrediente['id'] ?>">Histórico</a>
                                 <form method="post" action="?page=ingredientes&action=delete" class="inline">
                                     <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
                                     <input type="hidden" name="id" value="<?= $ingrediente['id'] ?>">
