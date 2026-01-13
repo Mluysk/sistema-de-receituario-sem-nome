@@ -28,7 +28,7 @@
             </div>
             <div class="form-group">
                 <label>Peso padrão (g)</label>
-                <input type="text" name="peso_padrao_g" id="peso-padrao" class="mask-number" placeholder="Ex: 1000">
+                <input type="text" name="peso_padrao_g" id="peso-padrao" class="mask-number" placeholder="Ex: 20kg ou 20g">
             </div>
             <div class="form-group">
                 <label>Preço por kg/unidade (R$)*</label>
