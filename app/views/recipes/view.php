@@ -104,10 +104,11 @@
         </div>
         <div class="receituario-detail">
             <h4>Custo detalhado</h4>
+            <p class="muted-text">Percentuais configurados na aba Configurações &gt; Custo detalhado.</p>
             <table class="receituario-table">
                 <thead>
                     <tr>
-                        <th>Custos invisível (configurável nas configurações)</th>
+                        <th>Custos invisíveis (configuráveis nas configurações)</th>
                         <th>%</th>
                     </tr>
                 </thead>
