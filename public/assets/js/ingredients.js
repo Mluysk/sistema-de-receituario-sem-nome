@@ -98,26 +98,35 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         const unidade = unidadeSelect.value;
-        const valor = parseMoney(pesoInput.value);
-        if (!valor) {
+        const raw = (pesoInput.value || '').trim();
+        const valor = parseMoney(raw);
+        if (!raw || !valor) {
             pesoHidden.value = '';
             pesoIndicator.textContent = unidade || 'g';
             return;
         }
 
         if (unidade === 'kg' || unidade === 'g') {
-            if (valor >= 1000) {
-                const kg = valor / 1000;
-                pesoIndicator.textContent = `${formatToMoney(kg)} kg`;
+            const hasDecimal = /[.,]/.test(raw);
+            if (hasDecimal) {
+                pesoHidden.value = (valor * 1000).toFixed(2).replace(/\.00$/, '');
+                pesoIndicator.textContent = `${formatWeight(valor, 3)} kg`;
             } else {
-                pesoIndicator.textContent = `${formatToMoney(valor)} g`;
+                pesoHidden.value = valor;
+                pesoIndicator.textContent = `${formatWeight(valor, 0)} g`;
             }
-            pesoHidden.value = valor;
             return;
         }
 
         pesoIndicator.textContent = unidade || 'g';
         pesoHidden.value = valor;
+    }
+
+    function formatWeight(value, decimals) {
+        return Number(value || 0).toLocaleString('pt-BR', {
+            minimumFractionDigits: decimals,
+            maximumFractionDigits: decimals,
+        });
     }
 
     if (tabs) {
