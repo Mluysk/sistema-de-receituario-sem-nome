@@ -156,6 +156,11 @@
     <div class="list-header">
         <h2>Receitas cadastradas</h2>
         <div class="filters">
+            <form method="get" class="search">
+                <input type="hidden" name="page" value="receitas">
+                <input type="text" name="q" placeholder="Buscar receita" value="<?= htmlspecialchars($search ?? '') ?>">
+                <button class="btn ghost" type="submit">Buscar</button>
+            </form>
             <label>Perfil de custo</label>
             <select id="perfil-receita">
                 <?php foreach ($perfis as $perfil): ?>
@@ -186,6 +191,7 @@
                         <td>R$ <span class="ganho"><?= format_money($custos['ganho']) ?></span></td>
                         <td>
                             <button type="button" class="btn small" data-edit='<?= json_encode($receita) ?>'>Editar</button>
+                            <a class="btn small ghost" href="?page=receitas&action=view&id=<?= $receita['id'] ?>">Ver</a>
                             <form method="post" action="?page=receitas&action=delete" class="inline">
                                 <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
                                 <input type="hidden" name="id" value="<?= $receita['id'] ?>">

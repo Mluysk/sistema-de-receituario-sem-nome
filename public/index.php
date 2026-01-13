@@ -59,6 +59,8 @@ switch ($page) {
                 $controller->calculate();
             } elseif ($action === 'perfil') {
                 $controller->profile();
+            } elseif ($action === 'view') {
+                $controller->view();
             } else {
                 $controller->index();
             }

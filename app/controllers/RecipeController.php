@@ -13,7 +13,14 @@ class RecipeController
     public function index(): void
     {
         $ingredientes = $this->pdo->query('SELECT id, nome_ingrediente, preco_por_kg FROM ingredientes ORDER BY nome_ingrediente')->fetchAll();
-        $receitas = $this->pdo->query('SELECT * FROM receitas ORDER BY data_cadastro DESC')->fetchAll();
+        $search = trim($_GET['q'] ?? '');
+        if ($search !== '') {
+            $stmt = $this->pdo->prepare('SELECT * FROM receitas WHERE nome_receita LIKE ? ORDER BY data_cadastro DESC');
+            $stmt->execute(['%' . $search . '%']);
+            $receitas = $stmt->fetchAll();
+        } else {
+            $receitas = $this->pdo->query('SELECT * FROM receitas ORDER BY data_cadastro DESC')->fetchAll();
+        }
         $perfis = $this->pdo->query('SELECT * FROM custos_perfis ORDER BY nome')->fetchAll();
         $perfilId = $perfis[0]['id'] ?? null;
 
@@ -28,6 +35,7 @@ class RecipeController
             'perfis' => $perfis,
             'receitaCustos' => $receitaCustos,
             'percentConfig' => $this->getProfilePercents($perfilId),
+            'search' => $search,
         ]);
     }
 
@@ -103,6 +111,23 @@ class RecipeController
         $stmt->execute([$id]);
         header('Content-Type: application/json');
         echo json_encode($stmt->fetchAll());
+    }
+
+    public function view(): void
+    {
+        $id = (int) ($_GET['id'] ?? 0);
+        $stmt = $this->pdo->prepare('SELECT * FROM receitas WHERE id = ?');
+        $stmt->execute([$id]);
+        $receita = $stmt->fetch();
+
+        $stmt = $this->pdo->prepare('SELECT i.nome_ingrediente, ri.gramas_usadas FROM receita_itens ri JOIN ingredientes i ON i.id = ri.ingrediente_id WHERE ri.receita_id = ?');
+        $stmt->execute([$id]);
+        $itens = $stmt->fetchAll();
+
+        View::render('recipes/view', [
+            'receita' => $receita,
+            'itens' => $itens,
+        ]);
     }
 
     public function calculate(): void
