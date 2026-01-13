@@ -49,53 +49,6 @@
                     </table>
                 </div>
             </div>
-            <div class="recipe-panel">
-                <h3>Custos</h3>
-                <div class="cost-percent-grid">
-                    <div class="form-group">
-                        <label>Água e luz (%)</label>
-                        <input type="text" id="perfil-agua-luz" class="mask-number" value="<?= format_percent($percentConfig['agua_luz'] ?? 0) ?>" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label>Imposto (%)</label>
-                        <input type="text" id="perfil-imposto" class="mask-number" value="<?= format_percent($percentConfig['imposto'] ?? 0) ?>" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label>Sobre o valor (%)</label>
-                        <input type="text" id="perfil-sobre-valor" class="mask-number" value="<?= format_percent($percentConfig['sobre_valor'] ?? 0) ?>" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label>Sobre o custo bruto (%)</label>
-                        <input type="text" id="perfil-sobre-custo-bruto" class="mask-number" value="<?= format_percent($percentConfig['sobre_custo_bruto'] ?? 0) ?>" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label>Taxa de cartão (%)</label>
-                        <input type="text" id="perfil-taxa-cartao" class="mask-number" value="<?= format_percent($percentConfig['taxa_cartao'] ?? 0) ?>" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label>Lucro (%)</label>
-                        <input type="text" id="perfil-lucro" class="mask-number" value="<?= format_percent($percentConfig['lucro'] ?? 0) ?>" readonly>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Percentual total do perfil (%)</label>
-                    <input type="text" id="perfil-total" class="mask-number" value="<?= format_percent($percentConfig['total'] ?? 0) ?>" readonly>
-                </div>
-                <div class="form-group">
-                    <label>Custo extra fixo (R$)</label>
-                    <input type="text" name="custo_extra_fixo" id="custo-extra-fixo" class="mask-money" placeholder="0,00">
-                </div>
-                <div class="form-group">
-                    <label>Custo extra percentual total (%)</label>
-                    <input type="text" name="custo_extra_percentual" id="custo-extra-percentual" class="mask-number" placeholder="0,00">
-                </div>
-                <div class="totals">
-                    <div><strong>Custo base:</strong> R$ <span id="custo-base">0,00</span></div>
-                    <div><strong>Custo total:</strong> R$ <span id="custo-total">0,00</span></div>
-                    <div><strong>Custo por unidade:</strong> R$ <span id="custo-unidade">0,00</span></div>
-                </div>
-                <p class="muted-text">Custos adicionais são somados ao custo base antes do perfil.</p>
-            </div>
         </div>
 
         <div class="form-actions">

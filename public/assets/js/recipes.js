@@ -125,10 +125,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (custoBase) {
             custoBase.textContent = formatToMoney(total);
         }
-        custoTotal.textContent = formatToMoney(totalComExtras);
+        if (custoTotal) {
+            custoTotal.textContent = formatToMoney(totalComExtras);
+        }
         const rendimento = parseMoney(rendimentoInput.value);
         const custoUnit = rendimento > 0 ? totalComExtras / rendimento : 0;
-        custoUnidade.textContent = formatToMoney(custoUnit);
+        if (custoUnidade) {
+            custoUnidade.textContent = formatToMoney(custoUnit);
+        }
     }
 
     function updateReceituarioPreview() {
