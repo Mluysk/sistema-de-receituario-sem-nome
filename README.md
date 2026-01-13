@@ -11,7 +11,7 @@ Projeto em PHP 8 + MySQL + HTML/CSS/JS, sem frameworks pesados e pronto para XAM
 1. Copie a pasta do projeto para `htdocs` (ex: `C:\xampp\htdocs\sistema-de-receituario-sem-nome`).
 2. Crie o banco e as tabelas executando o arquivo `database.sql` no phpMyAdmin ou via terminal MySQL.
 3. Ajuste as credenciais em `app/config.php` caso necessário.
-4. Acesse no navegador: `http://localhost/sistema-de-receituario-sem-nome/public`.
+4. Acesse no navegador: `http://localhost/sistema-de-receituario-sem-nome/public` (o sistema detecta automaticamente a subpasta).
 
 ## Estrutura de pastas
 - `app/` → configuração, controllers, views e utilitários.

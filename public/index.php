@@ -11,6 +11,7 @@ require_once __DIR__ . '/../app/controllers/RecipeController.php';
 require_once __DIR__ . '/../app/controllers/CostController.php';
 require_once __DIR__ . '/../app/controllers/ReportController.php';
 
+$config['app']['base_url'] = base_url();
 $db = new Database($config['db']);
 $pdo = $db->pdo();
 

@@ -1,5 +1,5 @@
 <?php
-$baseUrl = $config['app']['base_url'] ?? '';
+$baseUrl = $config['app']['base_url'] ?? base_url();
 $page = $_GET['page'] ?? 'ingredientes';
 $flashSuccess = $_SESSION['flash_success'] ?? null;
 $flashError = $_SESSION['flash_error'] ?? null;

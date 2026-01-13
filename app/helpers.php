@@ -42,3 +42,10 @@ function redirect(string $path): void
     header('Location: ' . $path);
     exit;
 }
+
+function base_url(): string
+{
+    $scriptName = $_SERVER['SCRIPT_NAME'] ?? '/index.php';
+    $base = rtrim(str_replace('\\', '/', dirname($scriptName)), '/');
+    return $base === '' ? '' : $base;
+}
