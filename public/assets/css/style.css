@@ -277,6 +277,22 @@ th, td {
     margin-bottom: 16px;
 }
 
+.input-with-unit {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.unit-indicator {
+    min-width: 72px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: #12151c;
+    color: var(--muted);
+    text-align: center;
+}
+
 .tabs {
     display: flex;
     gap: 12px;

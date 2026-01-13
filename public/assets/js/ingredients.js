@@ -7,6 +7,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const historyForm = document.getElementById('history-form');
     const historyIngredienteId = document.getElementById('history-ingrediente-id');
     const tabs = document.querySelector('[data-tabs="ingredientes"]');
+    const unidadeSelect = document.getElementById('unidade-padrao');
+    const pesoInput = document.getElementById('peso-padrao');
+    const pesoHidden = document.getElementById('peso-padrao-g');
+    const pesoIndicator = document.getElementById('peso-padrao-unidade');
 
     document.querySelectorAll('[data-edit]').forEach((button) => {
         button.addEventListener('click', () => {
@@ -21,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('observacoes').value = data.observacoes || '';
             cancelBtn.hidden = false;
             setActiveTab('cadastro');
+            updatePesoPadrao();
         });
     });
 
@@ -29,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
         form.action = '?page=ingredientes&action=store';
         document.getElementById('ingrediente-id').value = '';
         cancelBtn.hidden = true;
+        updatePesoPadrao();
     });
 
     document.querySelectorAll('[data-history]').forEach((button) => {
@@ -87,9 +93,44 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function updatePesoPadrao() {
+        if (!pesoInput || !pesoHidden || !pesoIndicator || !unidadeSelect) {
+            return;
+        }
+        const unidade = unidadeSelect.value;
+        const valor = parseMoney(pesoInput.value);
+        if (!valor) {
+            pesoHidden.value = '';
+            pesoIndicator.textContent = unidade || 'g';
+            return;
+        }
+
+        if (unidade === 'kg' || unidade === 'g') {
+            if (valor >= 1000) {
+                const kg = valor / 1000;
+                pesoIndicator.textContent = `${formatToMoney(kg)} kg`;
+            } else {
+                pesoIndicator.textContent = `${formatToMoney(valor)} g`;
+            }
+            pesoHidden.value = valor;
+            return;
+        }
+
+        pesoIndicator.textContent = unidade || 'g';
+        pesoHidden.value = valor;
+    }
+
     if (tabs) {
         tabs.querySelectorAll('.tab-button').forEach((button) => {
             button.addEventListener('click', () => setActiveTab(button.dataset.tab));
         });
     }
+
+    if (pesoInput) {
+        pesoInput.addEventListener('input', updatePesoPadrao);
+    }
+    if (unidadeSelect) {
+        unidadeSelect.addEventListener('change', updatePesoPadrao);
+    }
+    updatePesoPadrao();
 });

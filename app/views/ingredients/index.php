@@ -28,7 +28,11 @@
             </div>
             <div class="form-group">
                 <label>Peso padrão (g)</label>
-                <input type="text" name="peso_padrao_g" id="peso-padrao" class="mask-number" placeholder="Ex: 20kg ou 20g">
+                <div class="input-with-unit">
+                    <input type="text" name="peso_padrao_display" id="peso-padrao" class="mask-number" placeholder="Ex: 200 ou 1250">
+                    <span class="unit-indicator" id="peso-padrao-unidade">g</span>
+                </div>
+                <input type="hidden" name="peso_padrao_g" id="peso-padrao-g">
             </div>
             <div class="form-group">
                 <label>Preço por kg/unidade (R$)*</label>
