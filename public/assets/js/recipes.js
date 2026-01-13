@@ -9,7 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const perfilSelect = document.getElementById('perfil-receita');
     const custoExtraFixo = document.getElementById('custo-extra-fixo');
     const custoExtraPercentual = document.getElementById('custo-extra-percentual');
+    const custoExtraPercentualHidden = document.getElementById('custo-extra-percentual-hidden');
     const custoBase = document.getElementById('custo-base');
+    const percentInputs = document.querySelectorAll('.cost-percent');
 
     function createSelect(selectedId = '') {
         const select = document.createElement('select');
@@ -94,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
             total += parseMoney(costText);
         });
         const extraFixo = parseMoney(custoExtraFixo?.value || '0');
-        const extraPercentual = parseMoney(custoExtraPercentual?.value || '0');
+        const extraPercentual = parseMoney(custoExtraPercentualHidden?.value || custoExtraPercentual?.value || '0');
         const extraValor = total * (extraPercentual / 100);
         const totalComExtras = total + extraFixo + extraValor;
 
@@ -123,6 +125,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             if (custoExtraPercentual) {
                 custoExtraPercentual.value = String(data.custo_extra_percentual || '').replace('.', ',');
+                if (custoExtraPercentualHidden) {
+                    custoExtraPercentualHidden.value = data.custo_extra_percentual || '';
+                }
             }
             cancelButton.hidden = false;
 
@@ -140,6 +145,9 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('receita-id').value = '';
         itemsContainer.innerHTML = '';
         createRow();
+        if (custoExtraPercentualHidden) {
+            custoExtraPercentualHidden.value = '';
+        }
         updateTotals();
         cancelButton.hidden = true;
     });
@@ -150,6 +158,24 @@ document.addEventListener('DOMContentLoaded', () => {
     if (custoExtraPercentual) {
         custoExtraPercentual.addEventListener('input', updateTotals);
     }
+
+    function updateExtraPercentualTotal() {
+        let totalPercentual = 0;
+        percentInputs.forEach((input) => {
+            totalPercentual += parseMoney(input.value || '0');
+        });
+        if (custoExtraPercentual) {
+            custoExtraPercentual.value = formatToMoney(totalPercentual);
+        }
+        if (custoExtraPercentualHidden) {
+            custoExtraPercentualHidden.value = totalPercentual.toFixed(2).replace(/\.00$/, '');
+        }
+        updateTotals();
+    }
+
+    percentInputs.forEach((input) => {
+        input.addEventListener('input', updateExtraPercentualTotal);
+    });
 
     perfilSelect?.addEventListener('change', async () => {
         const perfilId = perfilSelect.value;
@@ -168,5 +194,6 @@ document.addEventListener('DOMContentLoaded', () => {
         createRow();
     }
 
+    updateExtraPercentualTotal();
     updateTotals();
 });

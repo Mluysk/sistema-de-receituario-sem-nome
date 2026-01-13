@@ -256,6 +256,13 @@ th, td {
     width: 100%;
 }
 
+.cost-percent-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
 @media (max-width: 900px) {
     .recipe-layout {
         grid-template-columns: 1fr;

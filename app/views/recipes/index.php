@@ -41,22 +41,40 @@
             </div>
             <div class="recipe-panel">
                 <h3>Custos</h3>
-                <div class="preset-costs">
-                    <span class="muted-text">Sugestões:</span>
-                    <button type="button" class="btn small ghost">Água e luz</button>
-                    <button type="button" class="btn small ghost">Imposto</button>
-                    <button type="button" class="btn small ghost">Sobre o valor</button>
-                    <button type="button" class="btn small ghost">Sobre o custo bruto</button>
-                    <button type="button" class="btn small ghost">Taxa de cartão</button>
-                    <button type="button" class="btn small ghost">Lucro</button>
+                <div class="cost-percent-grid">
+                    <div class="form-group">
+                        <label>Água e luz (%)</label>
+                        <input type="text" class="mask-number cost-percent" data-label="agua_luz" placeholder="0,00">
+                    </div>
+                    <div class="form-group">
+                        <label>Imposto (%)</label>
+                        <input type="text" class="mask-number cost-percent" data-label="imposto" placeholder="0,00">
+                    </div>
+                    <div class="form-group">
+                        <label>Sobre o valor (%)</label>
+                        <input type="text" class="mask-number cost-percent" data-label="sobre_valor" placeholder="0,00">
+                    </div>
+                    <div class="form-group">
+                        <label>Sobre o custo bruto (%)</label>
+                        <input type="text" class="mask-number cost-percent" data-label="sobre_custo_bruto" placeholder="0,00">
+                    </div>
+                    <div class="form-group">
+                        <label>Taxa de cartão (%)</label>
+                        <input type="text" class="mask-number cost-percent" data-label="taxa_cartao" placeholder="0,00">
+                    </div>
+                    <div class="form-group">
+                        <label>Lucro (%)</label>
+                        <input type="text" class="mask-number cost-percent" data-label="lucro" placeholder="0,00">
+                    </div>
                 </div>
                 <div class="form-group">
                     <label>Custo extra fixo (R$)</label>
                     <input type="text" name="custo_extra_fixo" id="custo-extra-fixo" class="mask-money" placeholder="0,00">
                 </div>
                 <div class="form-group">
-                    <label>Custo extra percentual (%)</label>
-                    <input type="text" name="custo_extra_percentual" id="custo-extra-percentual" class="mask-number" placeholder="0,00">
+                    <label>Custo extra percentual total (%)</label>
+                    <input type="text" id="custo-extra-percentual" class="mask-number" placeholder="0,00" readonly>
+                    <input type="hidden" name="custo_extra_percentual" id="custo-extra-percentual-hidden">
                 </div>
                 <div class="totals">
                     <div><strong>Custo base:</strong> R$ <span id="custo-base">0,00</span></div>
