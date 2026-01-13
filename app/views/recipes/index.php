@@ -18,12 +18,33 @@
             <textarea name="observacoes" id="observacoes-receita"></textarea>
         </div>
 
-        <div class="ingredients-list">
-            <div class="list-header">
-                <h3>Itens da receita</h3>
-                <button type="button" class="btn ghost" id="add-item">+ Adicionar linha</button>
+        <div class="tabs" data-tabs="receita">
+            <button type="button" class="tab-button active" data-tab="ingredientes">Ingredientes</button>
+            <button type="button" class="tab-button" data-tab="custos">Custos adicionais</button>
+        </div>
+
+        <div class="tab-content active" id="tab-ingredientes">
+            <div class="ingredients-list">
+                <div class="list-header">
+                    <h3>Itens da receita</h3>
+                    <button type="button" class="btn ghost" id="add-item">+ Adicionar linha</button>
+                </div>
+                <div class="list-table" id="items-container"></div>
             </div>
-            <div class="list-table" id="items-container"></div>
+        </div>
+
+        <div class="tab-content" id="tab-custos">
+            <div class="grid-2">
+                <div class="form-group">
+                    <label>Custo extra fixo (R$)</label>
+                    <input type="text" name="custo_extra_fixo" id="custo-extra-fixo" class="mask-money" placeholder="0,00">
+                </div>
+                <div class="form-group">
+                    <label>Custo extra percentual (%)</label>
+                    <input type="text" name="custo_extra_percentual" id="custo-extra-percentual" class="mask-number" placeholder="0,00">
+                </div>
+            </div>
+            <p class="muted-text">Os custos adicionais são somados ao custo base antes de aplicar o perfil de custos.</p>
         </div>
 
         <div class="totals">

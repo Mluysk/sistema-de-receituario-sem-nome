@@ -13,11 +13,16 @@ class CostCalculator
         $stmt = $this->pdo->prepare('SELECT SUM(custo_item) AS custo_total FROM receita_itens WHERE receita_id = ?');
         $stmt->execute([$receitaId]);
         $base = (float) ($stmt->fetch()['custo_total'] ?? 0);
+        $receita = $this->getRecipeExtras($receitaId);
+        $extraFixo = (float) ($receita['custo_extra_fixo'] ?? 0);
+        $extraPercentual = (float) ($receita['custo_extra_percentual'] ?? 0);
+        $extraPercentualValor = $base * ($extraPercentual / 100);
+        $baseTotal = $base + $extraFixo + $extraPercentualValor;
 
         if (!$perfilId) {
             return [
-                'custo_base' => $base,
-                'custo_total' => $base,
+                'custo_base' => $baseTotal,
+                'custo_total' => $baseTotal,
                 'preco_venda' => 0,
                 'ganho' => 0,
             ];
@@ -25,20 +30,27 @@ class CostCalculator
 
         $custos = $this->loadCostProfile($perfilId);
         $custoFixo = $custos['fixo'];
-        $custoPercentual = $base * $custos['percentual_custo'];
+        $custoPercentual = $baseTotal * $custos['percentual_custo'];
         $maoDeObra = $custos['mao_de_obra'];
-        $custoTotal = $base + $custoFixo + $custoPercentual + $maoDeObra;
+        $custoTotal = $baseTotal + $custoFixo + $custoPercentual + $maoDeObra;
 
         $percentuaisVenda = $custos['percentual_venda'];
         $precoVenda = $percentuaisVenda >= 1 ? 0 : ($custoTotal / (1 - $percentuaisVenda));
         $ganho = $precoVenda - $custoTotal;
 
         return [
-            'custo_base' => $base,
+            'custo_base' => $baseTotal,
             'custo_total' => $custoTotal,
             'preco_venda' => $precoVenda,
             'ganho' => $ganho,
         ];
+    }
+
+    private function getRecipeExtras(int $receitaId): array
+    {
+        $stmt = $this->pdo->prepare('SELECT custo_extra_fixo, custo_extra_percentual FROM receitas WHERE id = ?');
+        $stmt->execute([$receitaId]);
+        return $stmt->fetch() ?: ['custo_extra_fixo' => 0, 'custo_extra_percentual' => 0];
     }
 
     private function loadCostProfile(int $perfilId): array

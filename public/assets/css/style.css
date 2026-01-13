@@ -322,6 +322,11 @@ th, td {
     display: block;
 }
 
+.muted-text {
+    color: var(--muted);
+    font-size: 13px;
+}
+
 @media (max-width: 900px) {
     .sidebar {
         display: none;

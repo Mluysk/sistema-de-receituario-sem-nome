@@ -33,6 +33,8 @@ CREATE TABLE receitas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome_receita VARCHAR(150) NOT NULL,
     rendimento_padrao DECIMAL(10,2) NULL,
+    custo_extra_fixo DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+    custo_extra_percentual DECIMAL(5,2) NOT NULL DEFAULT 0.00,
     observacoes TEXT NULL,
     data_cadastro DATETIME NOT NULL
 ) ENGINE=InnoDB;

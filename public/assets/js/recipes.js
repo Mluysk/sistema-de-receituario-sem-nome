@@ -7,6 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('recipe-form');
     const cancelButton = document.getElementById('btn-cancel-receita');
     const perfilSelect = document.getElementById('perfil-receita');
+    const receitaTabs = document.querySelector('[data-tabs="receita"]');
+    const custoExtraFixo = document.getElementById('custo-extra-fixo');
+    const custoExtraPercentual = document.getElementById('custo-extra-percentual');
 
     function createSelect(selectedId = '') {
         const select = document.createElement('select');
@@ -91,7 +94,14 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('nome-receita').value = data.nome_receita;
             document.getElementById('rendimento').value = String(data.rendimento_padrao || '').replace('.', ',');
             document.getElementById('observacoes-receita').value = data.observacoes || '';
+            if (custoExtraFixo) {
+                custoExtraFixo.value = formatToMoney(data.custo_extra_fixo || 0);
+            }
+            if (custoExtraPercentual) {
+                custoExtraPercentual.value = String(data.custo_extra_percentual || '').replace('.', ',');
+            }
             cancelButton.hidden = false;
+            setActiveReceitaTab('ingredientes');
 
             itemsContainer.innerHTML = '';
             const response = await fetch(`?page=receitas&action=items&id=${data.id}`);
@@ -126,5 +136,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (itemsContainer.children.length === 0) {
         createRow();
+    }
+
+    function setActiveReceitaTab(tabName) {
+        document.querySelectorAll('[data-tabs=\"receita\"] .tab-button').forEach((btn) => {
+            btn.classList.toggle('active', btn.dataset.tab === tabName);
+        });
+        document.querySelectorAll('#tab-ingredientes, #tab-custos').forEach((content) => {
+            content.classList.toggle('active', content.id === `tab-${tabName}`);
+        });
+    }
+
+    if (receitaTabs) {
+        receitaTabs.querySelectorAll('.tab-button').forEach((button) => {
+            button.addEventListener('click', () => setActiveReceitaTab(button.dataset.tab));
+        });
     }
 });
