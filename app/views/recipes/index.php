@@ -18,6 +18,10 @@
                 <label>Rendimento padrão (unidades ou gramas)</label>
                 <input type="text" name="rendimento_padrao" id="rendimento" class="mask-number">
             </div>
+            <div class="form-group">
+                <label>Quantidade de padrão</label>
+                <input type="text" name="quantidade_padrao" id="quantidade-padrao" class="mask-number" value="1">
+            </div>
         </div>
         <div class="form-group">
             <label>Observações</label>
@@ -139,11 +143,11 @@
                     </tr>
                     <tr>
                         <td><strong>Quantidade de padrão</strong></td>
-                        <td>1</td>
+                        <td id="receituario-padrao-1">1</td>
                         <td>PD</td>
-                        <td>2</td>
+                        <td id="receituario-padrao-2">2</td>
                         <td>PD</td>
-                        <td>3</td>
+                        <td id="receituario-padrao-3">3</td>
                         <td>PD</td>
                     </tr>
                 </tfoot>

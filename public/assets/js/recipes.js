@@ -13,10 +13,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const receituarioBody = document.getElementById('receituario-body');
     const receituarioNome = document.getElementById('receituario-nome');
     const receitaTabs = document.querySelector('[data-tabs="receitas"]');
+    const quantidadePadraoInput = document.getElementById('quantidade-padrao');
     const rendimentoRows = [
         document.getElementById('receituario-rendimento-1'),
         document.getElementById('receituario-rendimento-2'),
         document.getElementById('receituario-rendimento-3'),
+    ];
+    const padraoCells = [
+        document.getElementById('receituario-padrao-1'),
+        document.getElementById('receituario-padrao-2'),
+        document.getElementById('receituario-padrao-3'),
     ];
     const perfilFields = {
         agua_luz: document.getElementById('perfil-agua-luz'),
@@ -136,6 +142,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const rows = [];
         let totalGramas = 0;
+        const padraoBase = Math.max(parseMoney(quantidadePadraoInput?.value || '1'), 0);
+        const padraoMultipliers = [padraoBase, padraoBase * 2, padraoBase * 3];
         itemsContainer.querySelectorAll('tr').forEach((row) => {
             const select = row.querySelector('select');
             const gramasInput = row.querySelector('input[name=\"gramas_usadas[]\"]');
@@ -145,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const kg = gramas / 1000;
             rows.push({
                 ingrediente,
-                valores: [kg, kg * 2, kg * 3],
+                valores: padraoMultipliers.map((multiplier) => kg * multiplier),
             });
         });
 
@@ -159,10 +167,15 @@ document.addEventListener('DOMContentLoaded', () => {
             .join('');
 
         const rendimentoKg = totalGramas / 1000;
-        const rendimentos = [rendimentoKg, rendimentoKg * 2, rendimentoKg * 3];
+        const rendimentos = padraoMultipliers.map((multiplier) => rendimentoKg * multiplier);
         rendimentos.forEach((valor, index) => {
             if (rendimentoRows[index]) {
                 rendimentoRows[index].textContent = formatNumber(valor, 3);
+            }
+        });
+        padraoCells.forEach((cell, index) => {
+            if (cell) {
+                cell.textContent = formatNumber(padraoMultipliers[index] || 0, 0);
             }
         });
     }
@@ -176,6 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     addItemButton.addEventListener('click', () => createRow());
     rendimentoInput.addEventListener('input', updateTotals);
+    quantidadePadraoInput?.addEventListener('input', updateReceituarioPreview);
     document.getElementById('nome-receita')?.addEventListener('input', updateReceituarioPreview);
 
     document.querySelectorAll('[data-edit]').forEach((button) => {
@@ -185,6 +199,9 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('receita-id').value = data.id;
             document.getElementById('nome-receita').value = data.nome_receita;
             document.getElementById('rendimento').value = String(data.rendimento_padrao || '').replace('.', ',');
+            if (quantidadePadraoInput) {
+                quantidadePadraoInput.value = String(data.quantidade_padrao || 1).replace('.', ',');
+            }
             document.getElementById('observacoes-receita').value = data.observacoes || '';
             if (custoExtraFixo) {
                 custoExtraFixo.value = formatToMoney(data.custo_extra_fixo || 0);

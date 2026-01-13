@@ -44,6 +44,7 @@ class RecipeController
         verify_csrf($_POST['csrf_token'] ?? '');
         $nome = trim($_POST['nome_receita'] ?? '');
         $rendimento = to_decimal($_POST['rendimento_padrao'] ?? '');
+        $quantidadePadrao = to_decimal($_POST['quantidade_padrao'] ?? '1');
         $custoExtraFixo = to_decimal($_POST['custo_extra_fixo'] ?? '');
         $custoExtraPercentual = to_decimal($_POST['custo_extra_percentual'] ?? '');
         $observacoes = trim($_POST['observacoes'] ?? '');
@@ -55,8 +56,8 @@ class RecipeController
             redirect('?page=receitas');
         }
 
-        $stmt = $this->pdo->prepare('INSERT INTO receitas (nome_receita, rendimento_padrao, custo_extra_fixo, custo_extra_percentual, observacoes, data_cadastro) VALUES (?, ?, ?, ?, ?, NOW())');
-        $stmt->execute([$nome, $rendimento, $custoExtraFixo, $custoExtraPercentual, $observacoes]);
+        $stmt = $this->pdo->prepare('INSERT INTO receitas (nome_receita, rendimento_padrao, quantidade_padrao, custo_extra_fixo, custo_extra_percentual, observacoes, data_cadastro) VALUES (?, ?, ?, ?, ?, ?, NOW())');
+        $stmt->execute([$nome, $rendimento, $quantidadePadrao, $custoExtraFixo, $custoExtraPercentual, $observacoes]);
         $receitaId = (int) $this->pdo->lastInsertId();
 
         $this->storeItems($receitaId, $ingredientes, $gramas);
@@ -71,6 +72,7 @@ class RecipeController
         $id = (int) ($_POST['id'] ?? 0);
         $nome = trim($_POST['nome_receita'] ?? '');
         $rendimento = to_decimal($_POST['rendimento_padrao'] ?? '');
+        $quantidadePadrao = to_decimal($_POST['quantidade_padrao'] ?? '1');
         $custoExtraFixo = to_decimal($_POST['custo_extra_fixo'] ?? '');
         $custoExtraPercentual = to_decimal($_POST['custo_extra_percentual'] ?? '');
         $observacoes = trim($_POST['observacoes'] ?? '');
@@ -82,8 +84,8 @@ class RecipeController
             redirect('?page=receitas');
         }
 
-        $stmt = $this->pdo->prepare('UPDATE receitas SET nome_receita = ?, rendimento_padrao = ?, custo_extra_fixo = ?, custo_extra_percentual = ?, observacoes = ? WHERE id = ?');
-        $stmt->execute([$nome, $rendimento, $custoExtraFixo, $custoExtraPercentual, $observacoes, $id]);
+        $stmt = $this->pdo->prepare('UPDATE receitas SET nome_receita = ?, rendimento_padrao = ?, quantidade_padrao = ?, custo_extra_fixo = ?, custo_extra_percentual = ?, observacoes = ? WHERE id = ?');
+        $stmt->execute([$nome, $rendimento, $quantidadePadrao, $custoExtraFixo, $custoExtraPercentual, $observacoes, $id]);
 
         $this->pdo->prepare('DELETE FROM receita_itens WHERE receita_id = ?')->execute([$id]);
         $this->storeItems($id, $ingredientes, $gramas);

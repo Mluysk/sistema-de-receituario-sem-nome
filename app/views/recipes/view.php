@@ -17,41 +17,45 @@
                         <th>Kg</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <?php foreach ($itens as $item):
-                        $kg = ((float) $item['gramas_usadas']) / 1000;
-                        ?>
-                        <tr>
-                            <td><?= htmlspecialchars($item['nome_ingrediente']) ?></td>
-                            <td><?= number_format($kg, 3, ',', '.') ?></td>
-                            <td>KG</td>
-                            <td><?= number_format($kg * 2, 3, ',', '.') ?></td>
-                            <td>KG</td>
-                            <td><?= number_format($kg * 3, 3, ',', '.') ?></td>
-                            <td>KG</td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-                <tfoot>
+            <tbody>
+                <?php
+                $padraoBase = (float) ($receita['quantidade_padrao'] ?? 1);
+                $multipliers = [$padraoBase, $padraoBase * 2, $padraoBase * 3];
+                ?>
+                <?php foreach ($itens as $item):
+                    $kg = ((float) $item['gramas_usadas']) / 1000;
+                    ?>
                     <tr>
-                        <td><strong>Rendimento de receita</strong></td>
-                        <td><?= number_format($totalKg, 3, ',', '.') ?></td>
+                        <td><?= htmlspecialchars($item['nome_ingrediente']) ?></td>
+                        <td><?= number_format($kg * $multipliers[0], 3, ',', '.') ?></td>
                         <td>KG</td>
-                        <td><?= number_format($totalKg * 2, 3, ',', '.') ?></td>
+                        <td><?= number_format($kg * $multipliers[1], 3, ',', '.') ?></td>
                         <td>KG</td>
-                        <td><?= number_format($totalKg * 3, 3, ',', '.') ?></td>
+                        <td><?= number_format($kg * $multipliers[2], 3, ',', '.') ?></td>
                         <td>KG</td>
                     </tr>
-                    <tr>
-                        <td><strong>Quantidade de padrão</strong></td>
-                        <td>1</td>
-                        <td>PD</td>
-                        <td>2</td>
-                        <td>PD</td>
-                        <td>3</td>
-                        <td>PD</td>
-                    </tr>
-                </tfoot>
+                <?php endforeach; ?>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td><strong>Rendimento de receita</strong></td>
+                    <td><?= number_format($totalKg * $multipliers[0], 3, ',', '.') ?></td>
+                    <td>KG</td>
+                    <td><?= number_format($totalKg * $multipliers[1], 3, ',', '.') ?></td>
+                    <td>KG</td>
+                    <td><?= number_format($totalKg * $multipliers[2], 3, ',', '.') ?></td>
+                    <td>KG</td>
+                </tr>
+                <tr>
+                    <td><strong>Quantidade de padrão</strong></td>
+                    <td><?= number_format($multipliers[0], 0, ',', '.') ?></td>
+                    <td>PD</td>
+                    <td><?= number_format($multipliers[1], 0, ',', '.') ?></td>
+                    <td>PD</td>
+                    <td><?= number_format($multipliers[2], 0, ',', '.') ?></td>
+                    <td>PD</td>
+                </tr>
+            </tfoot>
             </table>
         </div>
     </div>
@@ -77,16 +81,19 @@
                         <tr>
                             <td><?= htmlspecialchars($item['nome_ingrediente']) ?></td>
                             <td>R$ <?= number_format($item['valor_grama'], 4, ',', '.') ?></td>
-                            <td>R$ <?= number_format($item['custo_item'] * 3, 2, ',', '.') ?></td>
-                            <td>R$ <?= number_format($item['custo_item'] * 2, 2, ',', '.') ?></td>
-                            <td>R$ <?= number_format($item['custo_item'], 2, ',', '.') ?></td>
+                            <td>R$ <?= number_format($item['custo_item'] * $multipliers[2], 2, ',', '.') ?></td>
+                            <td>R$ <?= number_format($item['custo_item'] * $multipliers[1], 2, ',', '.') ?></td>
+                            <td>R$ <?= number_format($item['custo_item'] * $multipliers[0], 2, ',', '.') ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
                 <tfoot>
                     <tr>
                         <td><strong>Total</strong></td>
-                        <td colspan="4">R$ <?= number_format($totalCusto, 2, ',', '.') ?></td>
+                        <td>R$ <?= number_format($totalCusto / ($totalKg > 0 ? $totalKg * 1000 : 1) * 1000, 4, ',', '.') ?></td>
+                        <td>R$ <?= number_format($totalCusto * $multipliers[2], 2, ',', '.') ?></td>
+                        <td>R$ <?= number_format($totalCusto * $multipliers[1], 2, ',', '.') ?></td>
+                        <td>R$ <?= number_format($totalCusto * $multipliers[0], 2, ',', '.') ?></td>
                     </tr>
                 </tfoot>
             </table>
