@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const historyList = document.getElementById('history-list');
     const historyForm = document.getElementById('history-form');
     const historyIngredienteId = document.getElementById('history-ingrediente-id');
+    const tabs = document.querySelector('[data-tabs="ingredientes"]');
 
     document.querySelectorAll('[data-edit]').forEach((button) => {
         button.addEventListener('click', () => {
@@ -19,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('preco-kg').value = formatToMoney(data.preco_por_kg);
             document.getElementById('observacoes').value = data.observacoes || '';
             cancelBtn.hidden = false;
+            setActiveTab('cadastro');
         });
     });
 
@@ -75,4 +77,19 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.reload();
         }
     });
+
+    function setActiveTab(tabName) {
+        document.querySelectorAll('.tab-button').forEach((btn) => {
+            btn.classList.toggle('active', btn.dataset.tab === tabName);
+        });
+        document.querySelectorAll('.tab-content').forEach((content) => {
+            content.classList.toggle('active', content.id === `tab-${tabName}`);
+        });
+    }
+
+    if (tabs) {
+        tabs.querySelectorAll('.tab-button').forEach((button) => {
+            button.addEventListener('click', () => setActiveTab(button.dataset.tab));
+        });
+    }
 });

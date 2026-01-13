@@ -277,6 +277,35 @@ th, td {
     margin-bottom: 16px;
 }
 
+.tabs {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.tab-button {
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+}
+
+.tab-button.active {
+    background: var(--card);
+    color: var(--text);
+    border-color: var(--primary);
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
 @media (max-width: 900px) {
     .sidebar {
         display: none;

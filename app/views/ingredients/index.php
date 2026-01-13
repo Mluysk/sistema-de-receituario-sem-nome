@@ -1,4 +1,9 @@
-<div class="grid-2">
+<div class="tabs" data-tabs="ingredientes">
+    <button type="button" class="tab-button active" data-tab="cadastro">Cadastro</button>
+    <button type="button" class="tab-button" data-tab="lista">Lista</button>
+</div>
+
+<div class="tab-content active" id="tab-cadastro">
     <div class="card">
         <h2>Novo ingrediente</h2>
         <form method="post" action="?page=ingredientes&action=store" id="ingredient-form">
@@ -34,7 +39,9 @@
             </div>
         </form>
     </div>
+</div>
 
+<div class="tab-content" id="tab-lista">
     <div class="card">
         <h2>Ingredientes</h2>
         <form class="search" method="get">
