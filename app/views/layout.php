@@ -18,11 +18,11 @@ unset($_SESSION['flash_success'], $_SESSION['flash_error']);
         <aside class="sidebar">
             <div class="brand">Receituário</div>
             <nav>
-                <a class="nav-link <?= $page === 'ingredientes' ? 'active' : '' ?>" href="?page=ingredientes">Ingredientes</a>
-                <a class="nav-link <?= $page === 'receitas' ? 'active' : '' ?>" href="?page=receitas">Receitas</a>
-                <a class="nav-link <?= $page === 'custos' ? 'active' : '' ?>" href="?page=custos">Custos</a>
-                <a class="nav-link <?= $page === 'relatorios' ? 'active' : '' ?>" href="?page=relatorios">Relatórios</a>
-                <a class="nav-link <?= $page === 'configuracoes' ? 'active' : '' ?>" href="?page=configuracoes">Configurações</a>
+                <a class="nav-link <?= $page === 'ingredientes' ? 'active' : '' ?>" href="?page=ingredientes"><span class="nav-icon">🥣</span>Ingredientes</a>
+                <a class="nav-link <?= $page === 'receitas' ? 'active' : '' ?>" href="?page=receitas"><span class="nav-icon">🧾</span>Receitas</a>
+                <a class="nav-link <?= $page === 'custos' ? 'active' : '' ?>" href="?page=custos"><span class="nav-icon">💰</span>Custos</a>
+                <a class="nav-link <?= $page === 'relatorios' ? 'active' : '' ?>" href="?page=relatorios"><span class="nav-icon">📊</span>Relatórios</a>
+                <a class="nav-link <?= $page === 'configuracoes' ? 'active' : '' ?>" href="?page=configuracoes"><span class="nav-icon">⚙️</span>Configurações</a>
             </nav>
         </aside>
         <main class="main">

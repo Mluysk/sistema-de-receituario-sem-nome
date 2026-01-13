@@ -45,6 +45,14 @@ body {
     text-decoration: none;
     color: var(--muted);
     border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-icon {
+    width: 20px;
+    text-align: center;
 }
 
 .nav-link.active,
