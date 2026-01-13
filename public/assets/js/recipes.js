@@ -272,6 +272,9 @@ document.addEventListener('DOMContentLoaded', () => {
             perfilSelect.value = event.newValue;
             perfilSelect.dispatchEvent(new Event('change'));
         }
+        if (event.key === 'custos_percentuais_atualizados' && perfilSelect) {
+            perfilSelect.dispatchEvent(new Event('change'));
+        }
     });
 
     if (itemsContainer.children.length === 0) {

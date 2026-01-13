@@ -29,13 +29,18 @@ class CostCalculator
         }
 
         $custos = $this->loadCostProfile($perfilId);
+        $globalPercents = get_custos_percentuais($this->pdo);
         $custoFixo = $custos['fixo'];
-        $custoPercentual = $baseTotal * $custos['percentual_custo'];
+        $percentualCusto = $custos['percentual_custo'] + ($globalPercents['agua_luz'] / 100) + ($globalPercents['outros'] / 100);
+        $percentualVenda = $custos['percentual_venda']
+            + ($globalPercents['imposto'] / 100)
+            + ($globalPercents['taxa_cartao'] / 100)
+            + ($globalPercents['lucro'] / 100);
+        $custoPercentual = $baseTotal * $percentualCusto;
         $maoDeObra = $custos['mao_de_obra'];
         $custoTotal = $baseTotal + $custoFixo + $custoPercentual + $maoDeObra;
 
-        $percentuaisVenda = $custos['percentual_venda'];
-        $precoVenda = $percentuaisVenda >= 1 ? 0 : ($custoTotal / (1 - $percentuaisVenda));
+        $precoVenda = $percentualVenda >= 1 ? 0 : ($custoTotal / (1 - $percentualVenda));
         $ganho = $precoVenda - $custoTotal;
 
         return [

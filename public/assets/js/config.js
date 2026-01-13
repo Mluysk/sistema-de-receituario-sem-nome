@@ -4,6 +4,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const cancelBtn = document.getElementById('btn-cancel-unidade');
     const perfilSelect = document.getElementById('perfil-configuracao');
     const perfilPercentualId = document.getElementById('perfil-percentual-id');
+    const custosForm = document.getElementById('custos-percentuais-form');
+    const custosFields = {
+        agua_luz: document.getElementById('custos-agua-luz'),
+        imposto: document.getElementById('custos-imposto'),
+        taxa_cartao: document.getElementById('custos-taxa-cartao'),
+        margem_lucro: document.getElementById('custos-margem-lucro'),
+        outros: document.getElementById('custos-outros'),
+    };
     const percentFields = {
         agua_luz: document.getElementById('percent-agua-luz'),
         imposto: document.getElementById('percent-imposto'),
@@ -20,6 +28,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.querySelectorAll('.tab-content').forEach((content) => content.classList.remove('active'));
                 button.classList.add('active');
                 document.getElementById(`tab-${button.dataset.tab}`)?.classList.add('active');
+                if (button.dataset.tab === 'custos-percentuais') {
+                    loadCustosPercentuais();
+                }
             });
         });
     }
@@ -51,6 +62,42 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.perfil_id) {
                 localStorage.setItem('perfil_custos_id', String(data.perfil_id));
             }
+        });
+    }
+
+    async function loadCustosPercentuais() {
+        if (!custosForm) {
+            return;
+        }
+        const response = await fetch('?page=configuracoes&action=custos_percentuais');
+        const data = await response.json();
+        Object.entries(custosFields).forEach(([key, field]) => {
+            if (!field) {
+                return;
+            }
+            field.value = data[key] ?? 0;
+        });
+    }
+
+    if (custosForm) {
+        custosForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const formData = new FormData(custosForm);
+            const response = await fetch('?page=configuracoes&action=save_custos_percentuais', {
+                method: 'POST',
+                body: new URLSearchParams(formData),
+            });
+            const data = await response.json();
+            console.log('custos_carregados', data);
+            if (data.data) {
+                Object.entries(custosFields).forEach(([key, field]) => {
+                    if (!field) {
+                        return;
+                    }
+                    field.value = data.data[key] ?? 0;
+                });
+            }
+            localStorage.setItem('custos_percentuais_atualizados', String(Date.now()));
         });
     }
 

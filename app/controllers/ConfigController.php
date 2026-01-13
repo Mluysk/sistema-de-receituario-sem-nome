@@ -21,12 +21,14 @@ class ConfigController
             }
         }
         $percentConfig = $this->getProfilePercents($perfilAtualId);
+        $custosPercentuais = get_custos_percentuais($this->pdo);
         View::render('config/index', [
             'unidades' => $unidades,
             'perfis' => $perfis,
             'perfilAtual' => $perfilAtual,
             'perfilAtualId' => $perfilAtualId,
             'percentConfig' => $percentConfig,
+            'custosPercentuais' => $custosPercentuais,
         ]);
     }
 
@@ -120,6 +122,55 @@ class ConfigController
         error_log('perfil_custos_salvar_percentuais=' . $perfilId . ' dados=' . json_encode($valores));
         $_SESSION['flash_success'] = 'Percentuais atualizados.';
         redirect('?page=configuracoes#tab-custo-detalhado');
+    }
+
+    public function saveCustosPercentuais(): void
+    {
+        verify_csrf($_POST['csrf_token'] ?? '');
+        $values = [
+            'agua_luz' => max(0, to_decimal($_POST['agua_luz'] ?? '0')),
+            'imposto' => max(0, to_decimal($_POST['imposto'] ?? '0')),
+            'taxa_cartao' => max(0, to_decimal($_POST['taxa_cartao'] ?? '0')),
+            'margem_lucro' => max(0, to_decimal($_POST['margem_lucro'] ?? '0')),
+            'outros' => max(0, to_decimal($_POST['outros'] ?? '0')),
+        ];
+
+        $stmt = $this->pdo->query('SELECT id FROM configuracoes_custos ORDER BY id DESC LIMIT 1');
+        $row = $stmt ? $stmt->fetch() : null;
+        if ($row) {
+            $update = $this->pdo->prepare('UPDATE configuracoes_custos SET agua_luz = ?, imposto = ?, taxa_cartao = ?, margem_lucro = ?, outros = ?, data_atualizacao = NOW() WHERE id = ?');
+            $update->execute([
+                $values['agua_luz'],
+                $values['imposto'],
+                $values['taxa_cartao'],
+                $values['margem_lucro'],
+                $values['outros'],
+                $row['id'],
+            ]);
+        } else {
+            $insert = $this->pdo->prepare('INSERT INTO configuracoes_custos (agua_luz, imposto, taxa_cartao, margem_lucro, outros, data_atualizacao) VALUES (?, ?, ?, ?, ?, NOW())');
+            $insert->execute([
+                $values['agua_luz'],
+                $values['imposto'],
+                $values['taxa_cartao'],
+                $values['margem_lucro'],
+                $values['outros'],
+            ]);
+        }
+
+        error_log('custos_percentuais_salvos=' . json_encode($values));
+        header('Content-Type: application/json');
+        echo json_encode([
+            'status' => 'ok',
+            'data' => get_custos_percentuais($this->pdo),
+        ]);
+    }
+
+    public function custosPercentuais(): void
+    {
+        error_log('custos_percentuais_lidos');
+        header('Content-Type: application/json');
+        echo json_encode(get_custos_percentuais($this->pdo));
     }
 
     public function setProfile(): void

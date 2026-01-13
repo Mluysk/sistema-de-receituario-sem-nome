@@ -101,10 +101,14 @@ switch ($page) {
                 $controller->updateProfilePercents();
             } elseif ($action === 'set_profile') {
                 $controller->setProfile();
+            } elseif ($action === 'save_custos_percentuais') {
+                $controller->saveCustosPercentuais();
             }
         } else {
             if ($action === 'perfil') {
                 $controller->profile();
+            } elseif ($action === 'custos_percentuais') {
+                $controller->custosPercentuais();
             } else {
                 $controller->index();
             }

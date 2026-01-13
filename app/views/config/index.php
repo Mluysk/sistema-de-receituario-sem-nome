@@ -1,6 +1,7 @@
 <div class="tabs" data-tabs="configuracoes">
     <button type="button" class="tab-button active" data-tab="unidades">Unidades padrão</button>
     <button type="button" class="tab-button" data-tab="custo-detalhado">Custo detalhado</button>
+    <button type="button" class="tab-button" data-tab="custos-percentuais">Custos (%)</button>
 </div>
 
 <div class="tab-content active" id="tab-unidades">
@@ -121,5 +122,40 @@
                 <p>Nenhum perfil de custo cadastrado. Crie um perfil na aba Custos para configurar os percentuais.</p>
             <?php endif; ?>
         </div>
+    </div>
+</div>
+
+<div class="tab-content" id="tab-custos-percentuais">
+    <div class="card">
+        <h2>Custos (%)</h2>
+        <p class="muted-text">Configure os percentuais globais usados no receituário.</p>
+        <form id="custos-percentuais-form">
+            <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
+            <div class="grid-2">
+                <div class="form-group">
+                    <label>Água e Luz (%)</label>
+                    <input type="number" name="agua_luz" id="custos-agua-luz" step="0.01" min="0" value="<?= htmlspecialchars($custosPercentuais['agua_luz'] ?? 0) ?>">
+                </div>
+                <div class="form-group">
+                    <label>Imposto (%)</label>
+                    <input type="number" name="imposto" id="custos-imposto" step="0.01" min="0" value="<?= htmlspecialchars($custosPercentuais['imposto'] ?? 0) ?>">
+                </div>
+                <div class="form-group">
+                    <label>Taxa de Cartão (%)</label>
+                    <input type="number" name="taxa_cartao" id="custos-taxa-cartao" step="0.01" min="0" value="<?= htmlspecialchars($custosPercentuais['taxa_cartao'] ?? 0) ?>">
+                </div>
+                <div class="form-group">
+                    <label>Margem de Lucro (%)</label>
+                    <input type="number" name="margem_lucro" id="custos-margem-lucro" step="0.01" min="0" value="<?= htmlspecialchars($custosPercentuais['lucro'] ?? 0) ?>">
+                </div>
+                <div class="form-group">
+                    <label>Outros (%)</label>
+                    <input type="number" name="outros" id="custos-outros" step="0.01" min="0" value="<?= htmlspecialchars($custosPercentuais['outros'] ?? 0) ?>">
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn primary">Salvar Custos (%)</button>
+            </div>
+        </form>
     </div>
 </div>

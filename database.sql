@@ -66,3 +66,13 @@ CREATE TABLE custos_itens (
     base_calculo ENUM('custo', 'venda') NULL,
     FOREIGN KEY (perfil_id) REFERENCES custos_perfis(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
+
+CREATE TABLE configuracoes_custos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    agua_luz DECIMAL(5,2) NOT NULL DEFAULT 0.00,
+    imposto DECIMAL(5,2) NOT NULL DEFAULT 0.00,
+    taxa_cartao DECIMAL(5,2) NOT NULL DEFAULT 0.00,
+    margem_lucro DECIMAL(5,2) NOT NULL DEFAULT 0.00,
+    outros DECIMAL(5,2) NOT NULL DEFAULT 0.00,
+    data_atualizacao DATETIME NOT NULL
+) ENGINE=InnoDB;

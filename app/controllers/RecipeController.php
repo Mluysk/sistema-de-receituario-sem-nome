@@ -206,51 +206,7 @@ class RecipeController
 
     private function getProfilePercents(?int $perfilId): array
     {
-        $defaults = [
-            'agua_luz' => 0,
-            'imposto' => 0,
-            'sobre_valor' => 0,
-            'sobre_custo_bruto' => 0,
-            'taxa_cartao' => 0,
-            'lucro' => 0,
-            'total' => 0,
-        ];
-        if (!$perfilId) {
-            return $defaults;
-        }
-
-        $stmt = $this->pdo->prepare('SELECT etiqueta, valor_percentual FROM custos_itens WHERE perfil_id = ? AND tipo = "percentual"');
-        $stmt->execute([$perfilId]);
-        $rows = $stmt->fetchAll();
-        error_log('perfil_custos_lido_receitas_percentuais=' . $perfilId . ' dados=' . json_encode($rows));
-
-        $map = [
-            'agua e luz' => 'agua_luz',
-            'imposto' => 'imposto',
-            'sobre o valor' => 'sobre_valor',
-            'sobre o custo bruto' => 'sobre_custo_bruto',
-            'taxa de cartao' => 'taxa_cartao',
-            'taxa de cartão' => 'taxa_cartao',
-            'lucro' => 'lucro',
-        ];
-
-        foreach ($rows as $row) {
-            $label = strtolower(trim($row['etiqueta']));
-            if (isset($map[$label])) {
-                $defaults[$map[$label]] = (float) $row['valor_percentual'];
-            }
-        }
-
-        $defaults['total'] = array_sum([
-            $defaults['agua_luz'],
-            $defaults['imposto'],
-            $defaults['sobre_valor'],
-            $defaults['sobre_custo_bruto'],
-            $defaults['taxa_cartao'],
-            $defaults['lucro'],
-        ]);
-
-        return $defaults;
+        return get_custos_percentuais($this->pdo);
     }
 
 }
