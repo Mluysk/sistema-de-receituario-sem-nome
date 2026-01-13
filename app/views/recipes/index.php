@@ -41,6 +41,15 @@
             </div>
             <div class="recipe-panel">
                 <h3>Custos</h3>
+                <div class="preset-costs">
+                    <span class="muted-text">Sugestões:</span>
+                    <button type="button" class="btn small ghost">Água e luz</button>
+                    <button type="button" class="btn small ghost">Imposto</button>
+                    <button type="button" class="btn small ghost">Sobre o valor</button>
+                    <button type="button" class="btn small ghost">Sobre o custo bruto</button>
+                    <button type="button" class="btn small ghost">Taxa de cartão</button>
+                    <button type="button" class="btn small ghost">Lucro</button>
+                </div>
                 <div class="form-group">
                     <label>Custo extra fixo (R$)</label>
                     <input type="text" name="custo_extra_fixo" id="custo-extra-fixo" class="mask-money" placeholder="0,00">

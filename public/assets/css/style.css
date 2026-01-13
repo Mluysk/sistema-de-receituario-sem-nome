@@ -315,6 +315,10 @@ th, td {
     align-items: center;
 }
 
+.recipe-panel .preset-costs {
+    margin-bottom: 16px;
+}
+
 .input-with-unit {
     display: flex;
     align-items: center;
