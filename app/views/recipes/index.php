@@ -44,28 +44,32 @@
                 <div class="cost-percent-grid">
                     <div class="form-group">
                         <label>Água e luz (%)</label>
-                        <input type="text" class="mask-number cost-percent" data-label="agua_luz" placeholder="0,00">
+                        <input type="text" id="perfil-agua-luz" class="mask-number" value="<?= format_percent($percentConfig['agua_luz'] ?? 0) ?>" readonly>
                     </div>
                     <div class="form-group">
                         <label>Imposto (%)</label>
-                        <input type="text" class="mask-number cost-percent" data-label="imposto" placeholder="0,00">
+                        <input type="text" id="perfil-imposto" class="mask-number" value="<?= format_percent($percentConfig['imposto'] ?? 0) ?>" readonly>
                     </div>
                     <div class="form-group">
                         <label>Sobre o valor (%)</label>
-                        <input type="text" class="mask-number cost-percent" data-label="sobre_valor" placeholder="0,00">
+                        <input type="text" id="perfil-sobre-valor" class="mask-number" value="<?= format_percent($percentConfig['sobre_valor'] ?? 0) ?>" readonly>
                     </div>
                     <div class="form-group">
                         <label>Sobre o custo bruto (%)</label>
-                        <input type="text" class="mask-number cost-percent" data-label="sobre_custo_bruto" placeholder="0,00">
+                        <input type="text" id="perfil-sobre-custo-bruto" class="mask-number" value="<?= format_percent($percentConfig['sobre_custo_bruto'] ?? 0) ?>" readonly>
                     </div>
                     <div class="form-group">
                         <label>Taxa de cartão (%)</label>
-                        <input type="text" class="mask-number cost-percent" data-label="taxa_cartao" placeholder="0,00">
+                        <input type="text" id="perfil-taxa-cartao" class="mask-number" value="<?= format_percent($percentConfig['taxa_cartao'] ?? 0) ?>" readonly>
                     </div>
                     <div class="form-group">
                         <label>Lucro (%)</label>
-                        <input type="text" class="mask-number cost-percent" data-label="lucro" placeholder="0,00">
+                        <input type="text" id="perfil-lucro" class="mask-number" value="<?= format_percent($percentConfig['lucro'] ?? 0) ?>" readonly>
                     </div>
+                </div>
+                <div class="form-group">
+                    <label>Percentual total do perfil (%)</label>
+                    <input type="text" id="perfil-total" class="mask-number" value="<?= format_percent($percentConfig['total'] ?? 0) ?>" readonly>
                 </div>
                 <div class="form-group">
                     <label>Custo extra fixo (R$)</label>
@@ -73,8 +77,7 @@
                 </div>
                 <div class="form-group">
                     <label>Custo extra percentual total (%)</label>
-                    <input type="text" id="custo-extra-percentual" class="mask-number" placeholder="0,00" readonly>
-                    <input type="hidden" name="custo_extra_percentual" id="custo-extra-percentual-hidden">
+                    <input type="text" name="custo_extra_percentual" id="custo-extra-percentual" class="mask-number" placeholder="0,00">
                 </div>
                 <div class="totals">
                     <div><strong>Custo base:</strong> R$ <span id="custo-base">0,00</span></div>

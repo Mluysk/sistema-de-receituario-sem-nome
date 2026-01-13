@@ -15,10 +15,11 @@ class RecipeController
         $ingredientes = $this->pdo->query('SELECT id, nome_ingrediente, preco_por_kg FROM ingredientes ORDER BY nome_ingrediente')->fetchAll();
         $receitas = $this->pdo->query('SELECT * FROM receitas ORDER BY data_cadastro DESC')->fetchAll();
         $perfis = $this->pdo->query('SELECT * FROM custos_perfis ORDER BY nome')->fetchAll();
+        $perfilId = $perfis[0]['id'] ?? null;
 
         $receitaCustos = [];
         foreach ($receitas as $receita) {
-            $receitaCustos[$receita['id']] = $this->calculator->calculateRecipeCosts((int) $receita['id'], $perfis[0]['id'] ?? null);
+            $receitaCustos[$receita['id']] = $this->calculator->calculateRecipeCosts((int) $receita['id'], $perfilId);
         }
 
         View::render('recipes/index', [
@@ -26,6 +27,7 @@ class RecipeController
             'receitas' => $receitas,
             'perfis' => $perfis,
             'receitaCustos' => $receitaCustos,
+            'percentConfig' => $this->getProfilePercents($perfilId),
         ]);
     }
 
@@ -111,6 +113,13 @@ class RecipeController
         echo json_encode($this->calculator->calculateRecipeCosts($id, $perfilId));
     }
 
+    public function profile(): void
+    {
+        $perfilId = (int) ($_GET['perfil_id'] ?? 0);
+        header('Content-Type: application/json');
+        echo json_encode($this->getProfilePercents($perfilId));
+    }
+
     private function storeItems(int $receitaId, array $ingredientes, array $gramas): void
     {
         $stmt = $this->pdo->prepare('INSERT INTO receita_itens (receita_id, ingrediente_id, gramas_usadas, custo_item) VALUES (?, ?, ?, ?)');
@@ -135,6 +144,54 @@ class RecipeController
             return 0.0;
         }
         return ((float) $row['preco_por_kg']) / 1000;
+    }
+
+    private function getProfilePercents(?int $perfilId): array
+    {
+        $defaults = [
+            'agua_luz' => 0,
+            'imposto' => 0,
+            'sobre_valor' => 0,
+            'sobre_custo_bruto' => 0,
+            'taxa_cartao' => 0,
+            'lucro' => 0,
+            'total' => 0,
+        ];
+        if (!$perfilId) {
+            return $defaults;
+        }
+
+        $stmt = $this->pdo->prepare('SELECT etiqueta, valor_percentual FROM custos_itens WHERE perfil_id = ? AND tipo = "percentual"');
+        $stmt->execute([$perfilId]);
+        $rows = $stmt->fetchAll();
+
+        $map = [
+            'agua e luz' => 'agua_luz',
+            'imposto' => 'imposto',
+            'sobre o valor' => 'sobre_valor',
+            'sobre o custo bruto' => 'sobre_custo_bruto',
+            'taxa de cartao' => 'taxa_cartao',
+            'taxa de cartão' => 'taxa_cartao',
+            'lucro' => 'lucro',
+        ];
+
+        foreach ($rows as $row) {
+            $label = strtolower(trim($row['etiqueta']));
+            if (isset($map[$label])) {
+                $defaults[$map[$label]] = (float) $row['valor_percentual'];
+            }
+        }
+
+        $defaults['total'] = array_sum([
+            $defaults['agua_luz'],
+            $defaults['imposto'],
+            $defaults['sobre_valor'],
+            $defaults['sobre_custo_bruto'],
+            $defaults['taxa_cartao'],
+            $defaults['lucro'],
+        ]);
+
+        return $defaults;
     }
 
 }

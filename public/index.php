@@ -55,6 +55,8 @@ switch ($page) {
                 $controller->showItems();
             } elseif ($action === 'calculate') {
                 $controller->calculate();
+            } elseif ($action === 'perfil') {
+                $controller->profile();
             } else {
                 $controller->index();
             }
