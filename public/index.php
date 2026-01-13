@@ -97,6 +97,8 @@ switch ($page) {
                 $controller->update();
             } elseif ($action === 'delete') {
                 $controller->destroy();
+            } elseif ($action === 'update_profile') {
+                $controller->updateProfilePercents();
             } elseif ($action === 'set_profile') {
                 $controller->setProfile();
             }

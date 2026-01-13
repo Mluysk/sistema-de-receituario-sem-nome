@@ -84,25 +84,39 @@
         <div class="card">
             <h2>Percentuais do perfil</h2>
             <?php if (!empty($perfis)): ?>
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Item</th>
-                                <th>%</th>
-                            </tr>
-                        </thead>
-                        <tbody id="perfil-percentuais">
-                            <tr><td>Água e luz</td><td data-key="agua_luz"><?= format_percent($percentConfig['agua_luz'] ?? 0) ?></td></tr>
-                            <tr><td>Imposto</td><td data-key="imposto"><?= format_percent($percentConfig['imposto'] ?? 0) ?></td></tr>
-                            <tr><td>Sobre o valor</td><td data-key="sobre_valor"><?= format_percent($percentConfig['sobre_valor'] ?? 0) ?></td></tr>
-                            <tr><td>Sobre o custo bruto</td><td data-key="sobre_custo_bruto"><?= format_percent($percentConfig['sobre_custo_bruto'] ?? 0) ?></td></tr>
-                            <tr><td>Taxa de cartão</td><td data-key="taxa_cartao"><?= format_percent($percentConfig['taxa_cartao'] ?? 0) ?></td></tr>
-                            <tr><td>Lucro</td><td data-key="lucro"><?= format_percent($percentConfig['lucro'] ?? 0) ?></td></tr>
-                            <tr><td><strong>Total</strong></td><td data-key="total"><strong><?= format_percent($percentConfig['total'] ?? 0) ?></strong></td></tr>
-                        </tbody>
-                    </table>
-                </div>
+                <form method="post" action="?page=configuracoes&action=update_profile" id="perfil-percentuais-form">
+                    <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
+                    <input type="hidden" name="perfil_id" id="perfil-percentual-id" value="<?= (int) $perfilAtualId ?>">
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Água e luz (%)</label>
+                            <input type="text" name="agua_luz" id="percent-agua-luz" class="mask-number" value="<?= format_percent($percentConfig['agua_luz'] ?? 0) ?>">
+                        </div>
+                        <div class="form-group">
+                            <label>Imposto (%)</label>
+                            <input type="text" name="imposto" id="percent-imposto" class="mask-number" value="<?= format_percent($percentConfig['imposto'] ?? 0) ?>">
+                        </div>
+                        <div class="form-group">
+                            <label>Sobre o valor (%)</label>
+                            <input type="text" name="sobre_valor" id="percent-sobre-valor" class="mask-number" value="<?= format_percent($percentConfig['sobre_valor'] ?? 0) ?>">
+                        </div>
+                        <div class="form-group">
+                            <label>Sobre o custo bruto (%)</label>
+                            <input type="text" name="sobre_custo_bruto" id="percent-sobre-custo-bruto" class="mask-number" value="<?= format_percent($percentConfig['sobre_custo_bruto'] ?? 0) ?>">
+                        </div>
+                        <div class="form-group">
+                            <label>Taxa de cartão (%)</label>
+                            <input type="text" name="taxa_cartao" id="percent-taxa-cartao" class="mask-number" value="<?= format_percent($percentConfig['taxa_cartao'] ?? 0) ?>">
+                        </div>
+                        <div class="form-group">
+                            <label>Lucro (%)</label>
+                            <input type="text" name="lucro" id="percent-lucro" class="mask-number" value="<?= format_percent($percentConfig['lucro'] ?? 0) ?>">
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn primary">Salvar percentuais</button>
+                    </div>
+                </form>
             <?php else: ?>
                 <p>Nenhum perfil de custo cadastrado. Crie um perfil na aba Custos para configurar os percentuais.</p>
             <?php endif; ?>

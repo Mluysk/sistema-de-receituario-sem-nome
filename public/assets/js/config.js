@@ -3,7 +3,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('unit-form');
     const cancelBtn = document.getElementById('btn-cancel-unidade');
     const perfilSelect = document.getElementById('perfil-configuracao');
-    const percentualRows = document.getElementById('perfil-percentuais');
+    const perfilPercentualId = document.getElementById('perfil-percentual-id');
+    const percentFields = {
+        agua_luz: document.getElementById('percent-agua-luz'),
+        imposto: document.getElementById('percent-imposto'),
+        sobre_valor: document.getElementById('percent-sobre-valor'),
+        sobre_custo_bruto: document.getElementById('percent-sobre-custo-bruto'),
+        taxa_cartao: document.getElementById('percent-taxa-cartao'),
+        lucro: document.getElementById('percent-lucro'),
+    };
 
     if (tabs) {
         tabs.querySelectorAll('.tab-button').forEach((button) => {
@@ -29,18 +37,16 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             const data = await response.json();
             console.log('custos_carregados', data);
-            if (percentualRows && data.percentConfig) {
-                Object.entries(data.percentConfig).forEach(([key, value]) => {
-                    const cell = percentualRows.querySelector(`[data-key="${key}"]`);
-                    if (!cell) {
+            if (data.percentConfig) {
+                Object.entries(percentFields).forEach(([key, field]) => {
+                    if (!field) {
                         return;
                     }
-                    if (key === 'total') {
-                        cell.innerHTML = `<strong>${formatToMoney(value)}</strong>`;
-                    } else {
-                        cell.textContent = formatToMoney(value);
-                    }
+                    field.value = formatToMoney(data.percentConfig[key] || 0);
                 });
+            }
+            if (perfilPercentualId) {
+                perfilPercentualId.value = perfilId;
             }
             if (data.perfil_id) {
                 localStorage.setItem('perfil_custos_id', String(data.perfil_id));
