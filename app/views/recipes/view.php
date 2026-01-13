@@ -107,7 +107,7 @@
             <table class="receituario-table">
                 <thead>
                     <tr>
-                        <th>Custos invisível</th>
+                        <th>Custos invisível (configurável nas configurações)</th>
                         <th>%</th>
                     </tr>
                 </thead>
