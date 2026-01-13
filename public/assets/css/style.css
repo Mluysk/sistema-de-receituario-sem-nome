@@ -52,7 +52,20 @@ body {
 
 .nav-icon {
     width: 20px;
-    text-align: center;
+    height: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-icon svg {
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 .nav-link.active,

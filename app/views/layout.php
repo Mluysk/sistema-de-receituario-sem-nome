@@ -18,11 +18,50 @@ unset($_SESSION['flash_success'], $_SESSION['flash_error']);
         <aside class="sidebar">
             <div class="brand">Receituário</div>
             <nav>
-                <a class="nav-link <?= $page === 'ingredientes' ? 'active' : '' ?>" href="?page=ingredientes"><span class="nav-icon">🥣</span>Ingredientes</a>
-                <a class="nav-link <?= $page === 'receitas' ? 'active' : '' ?>" href="?page=receitas"><span class="nav-icon">🧾</span>Receitas</a>
-                <a class="nav-link <?= $page === 'custos' ? 'active' : '' ?>" href="?page=custos"><span class="nav-icon">💰</span>Custos</a>
-                <a class="nav-link <?= $page === 'relatorios' ? 'active' : '' ?>" href="?page=relatorios"><span class="nav-icon">📊</span>Relatórios</a>
-                <a class="nav-link <?= $page === 'configuracoes' ? 'active' : '' ?>" href="?page=configuracoes"><span class="nav-icon">⚙️</span>Configurações</a>
+                <a class="nav-link <?= $page === 'ingredientes' ? 'active' : '' ?>" href="?page=ingredientes">
+                    <span class="nav-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <circle cx="12" cy="12" r="7" />
+                            <path d="M12 5v4" />
+                        </svg>
+                    </span>
+                    Ingredientes
+                </a>
+                <a class="nav-link <?= $page === 'receitas' ? 'active' : '' ?>" href="?page=receitas">
+                    <span class="nav-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <rect x="6" y="4" width="12" height="16" rx="2" />
+                            <path d="M9 8h6M9 12h6M9 16h4" />
+                        </svg>
+                    </span>
+                    Receitas
+                </a>
+                <a class="nav-link <?= $page === 'custos' ? 'active' : '' ?>" href="?page=custos">
+                    <span class="nav-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <circle cx="12" cy="12" r="7" />
+                            <path d="M9 12h6M12 9v6" />
+                        </svg>
+                    </span>
+                    Custos
+                </a>
+                <a class="nav-link <?= $page === 'relatorios' ? 'active' : '' ?>" href="?page=relatorios">
+                    <span class="nav-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M5 19V9M12 19V5M19 19v-7" />
+                        </svg>
+                    </span>
+                    Relatórios
+                </a>
+                <a class="nav-link <?= $page === 'configuracoes' ? 'active' : '' ?>" href="?page=configuracoes">
+                    <span class="nav-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <circle cx="12" cy="12" r="3" />
+                            <path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4l1.4-1.4M17 7l1.4-1.4" />
+                        </svg>
+                    </span>
+                    Configurações
+                </a>
             </nav>
         </aside>
         <main class="main">
