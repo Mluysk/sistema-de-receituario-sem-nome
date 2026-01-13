@@ -8,17 +8,12 @@
             <table class="receituario-table">
                 <thead>
                     <tr>
-                        <th rowspan="2">Ingredientes</th>
-                        <th colspan="2">Quantidades</th>
-                        <th colspan="2">Quantidades</th>
-                        <th colspan="2">Quantidades</th>
-                    </tr>
-                    <tr>
-                        <th>1</th>
+                        <th>Ingredientes</th>
+                        <th>Quantidade 1</th>
                         <th>Kg</th>
-                        <th>2</th>
+                        <th>Quantidade 2</th>
                         <th>Kg</th>
-                        <th>3</th>
+                        <th>Quantidade 3</th>
                         <th>Kg</th>
                     </tr>
                 </thead>
