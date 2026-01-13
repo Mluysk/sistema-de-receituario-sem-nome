@@ -120,13 +120,36 @@ class RecipeController
         $stmt->execute([$id]);
         $receita = $stmt->fetch();
 
-        $stmt = $this->pdo->prepare('SELECT i.nome_ingrediente, ri.gramas_usadas FROM receita_itens ri JOIN ingredientes i ON i.id = ri.ingrediente_id WHERE ri.receita_id = ?');
+        $stmt = $this->pdo->prepare('SELECT i.nome_ingrediente, i.preco_por_kg, ri.gramas_usadas FROM receita_itens ri JOIN ingredientes i ON i.id = ri.ingrediente_id WHERE ri.receita_id = ?');
         $stmt->execute([$id]);
         $itens = $stmt->fetchAll();
+
+        $totalGramas = 0.0;
+        $totalCusto = 0.0;
+        foreach ($itens as &$item) {
+            $valorGrama = ((float) $item['preco_por_kg']) / 1000;
+            $item['valor_grama'] = $valorGrama;
+            $item['custo_item'] = $valorGrama * (float) $item['gramas_usadas'];
+            $totalGramas += (float) $item['gramas_usadas'];
+            $totalCusto += $item['custo_item'];
+        }
+        unset($item);
+
+        $totalKg = $totalGramas / 1000;
+        $valorKg = $totalKg > 0 ? $totalCusto / $totalKg : 0;
+
+        $perfis = $this->pdo->query('SELECT * FROM custos_perfis ORDER BY nome')->fetchAll();
+        $perfilId = $perfis[0]['id'] ?? null;
+        $percentConfig = $this->getProfilePercents($perfilId);
 
         View::render('recipes/view', [
             'receita' => $receita,
             'itens' => $itens,
+            'totalGramas' => $totalGramas,
+            'totalKg' => $totalKg,
+            'totalCusto' => $totalCusto,
+            'valorKg' => $valorKg,
+            'percentConfig' => $percentConfig,
         ]);
     }
 
