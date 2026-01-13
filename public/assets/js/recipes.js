@@ -7,9 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('recipe-form');
     const cancelButton = document.getElementById('btn-cancel-receita');
     const perfilSelect = document.getElementById('perfil-receita');
-    const receitaTabs = document.querySelector('[data-tabs="receita"]');
     const custoExtraFixo = document.getElementById('custo-extra-fixo');
     const custoExtraPercentual = document.getElementById('custo-extra-percentual');
+    const custoBase = document.getElementById('custo-base');
 
     function createSelect(selectedId = '') {
         const select = document.createElement('select');
@@ -28,14 +28,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function createRow(data = {}) {
-        const row = document.createElement('div');
-        row.className = 'item-row';
+        const row = document.createElement('tr');
         const select = createSelect(data.ingrediente_id || '');
         const gramasInput = document.createElement('input');
         gramasInput.type = 'text';
         gramasInput.name = 'gramas_usadas[]';
         gramasInput.className = 'mask-number';
         gramasInput.value = data.gramas_usadas ? String(data.gramas_usadas).replace('.', ',') : '';
+        const valorGramaSpan = document.createElement('span');
+        valorGramaSpan.className = 'item-unit';
+        valorGramaSpan.textContent = 'R$ 0,00';
         const custoSpan = document.createElement('span');
         custoSpan.className = 'item-cost';
         custoSpan.textContent = 'R$ 0,00';
@@ -44,10 +46,23 @@ document.addEventListener('DOMContentLoaded', () => {
         removeBtn.className = 'btn danger small';
         removeBtn.textContent = 'Remover';
 
-        row.appendChild(select);
-        row.appendChild(gramasInput);
-        row.appendChild(custoSpan);
-        row.appendChild(removeBtn);
+        const tdIngrediente = document.createElement('td');
+        const tdQuantidade = document.createElement('td');
+        const tdValor = document.createElement('td');
+        const tdCusto = document.createElement('td');
+        const tdAcoes = document.createElement('td');
+
+        tdIngrediente.appendChild(select);
+        tdQuantidade.appendChild(gramasInput);
+        tdValor.appendChild(valorGramaSpan);
+        tdCusto.appendChild(custoSpan);
+        tdAcoes.appendChild(removeBtn);
+
+        row.appendChild(tdIngrediente);
+        row.appendChild(tdQuantidade);
+        row.appendChild(tdValor);
+        row.appendChild(tdCusto);
+        row.appendChild(tdAcoes);
         itemsContainer.appendChild(row);
 
         function updateItemCost() {
@@ -56,6 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const valorGrama = ingrediente ? Number(ingrediente.preco_por_kg) / 1000 : 0;
             const gramas = parseMoney(gramasInput.value);
             const custo = gramas * valorGrama;
+            valorGramaSpan.textContent = `R$ ${formatToMoney(valorGrama)}`;
             custoSpan.textContent = `R$ ${formatToMoney(custo)}`;
             updateTotals();
         }
@@ -73,13 +89,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateTotals() {
         let total = 0;
-        itemsContainer.querySelectorAll('.item-row').forEach((row) => {
+        itemsContainer.querySelectorAll('tr').forEach((row) => {
             const costText = row.querySelector('.item-cost').textContent.replace('R$ ', '');
             total += parseMoney(costText);
         });
-        custoTotal.textContent = formatToMoney(total);
+        const extraFixo = parseMoney(custoExtraFixo?.value || '0');
+        const extraPercentual = parseMoney(custoExtraPercentual?.value || '0');
+        const extraValor = total * (extraPercentual / 100);
+        const totalComExtras = total + extraFixo + extraValor;
+
+        if (custoBase) {
+            custoBase.textContent = formatToMoney(total);
+        }
+        custoTotal.textContent = formatToMoney(totalComExtras);
         const rendimento = parseMoney(rendimentoInput.value);
-        const custoUnit = rendimento > 0 ? total / rendimento : 0;
+        const custoUnit = rendimento > 0 ? totalComExtras / rendimento : 0;
         custoUnidade.textContent = formatToMoney(custoUnit);
     }
 
@@ -101,7 +125,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 custoExtraPercentual.value = String(data.custo_extra_percentual || '').replace('.', ',');
             }
             cancelButton.hidden = false;
-            setActiveReceitaTab('ingredientes');
 
             itemsContainer.innerHTML = '';
             const response = await fetch(`?page=receitas&action=items&id=${data.id}`);
@@ -121,6 +144,13 @@ document.addEventListener('DOMContentLoaded', () => {
         cancelButton.hidden = true;
     });
 
+    if (custoExtraFixo) {
+        custoExtraFixo.addEventListener('input', updateTotals);
+    }
+    if (custoExtraPercentual) {
+        custoExtraPercentual.addEventListener('input', updateTotals);
+    }
+
     perfilSelect?.addEventListener('change', async () => {
         const perfilId = perfilSelect.value;
         const rows = document.querySelectorAll('tr[data-receita-id]');
@@ -138,18 +168,5 @@ document.addEventListener('DOMContentLoaded', () => {
         createRow();
     }
 
-    function setActiveReceitaTab(tabName) {
-        document.querySelectorAll('[data-tabs=\"receita\"] .tab-button').forEach((btn) => {
-            btn.classList.toggle('active', btn.dataset.tab === tabName);
-        });
-        document.querySelectorAll('#tab-ingredientes, #tab-custos').forEach((content) => {
-            content.classList.toggle('active', content.id === `tab-${tabName}`);
-        });
-    }
-
-    if (receitaTabs) {
-        receitaTabs.querySelectorAll('.tab-button').forEach((button) => {
-            button.addEventListener('click', () => setActiveReceitaTab(button.dataset.tab));
-        });
-    }
+    updateTotals();
 });
