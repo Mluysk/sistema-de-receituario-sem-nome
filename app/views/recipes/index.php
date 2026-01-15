@@ -1,0 +1,169 @@
+<div class="tabs" data-tabs="receitas">
+    <button type="button" class="tab-button active" data-tab="cadastro">Cadastro</button>
+    <button type="button" class="tab-button" data-tab="receituario">Receituário</button>
+</div>
+
+<div class="tab-content active" id="tab-cadastro">
+    <div class="card">
+        <h2>Cadastro de receita</h2>
+        <form method="post" action="?page=receitas&action=store" id="recipe-form">
+        <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
+        <input type="hidden" name="id" id="receita-id">
+        <div class="grid-2">
+            <div class="form-group">
+                <label>Nome da receita*</label>
+                <input type="text" name="nome_receita" id="nome-receita" required>
+            </div>
+            <div class="form-group">
+                <label>Rendimento padrão (unidades ou gramas)</label>
+                <input type="text" name="rendimento_padrao" id="rendimento" class="mask-number">
+            </div>
+            <div class="form-group">
+                <label>Quantidade de padrão</label>
+                <input type="text" name="quantidade_padrao" id="quantidade-padrao" class="mask-number" value="1">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Observações</label>
+            <textarea name="observacoes" id="observacoes-receita"></textarea>
+        </div>
+
+        <div class="recipe-layout">
+            <div class="recipe-panel">
+                <div class="list-header">
+                    <h3>Ingredientes</h3>
+                    <button type="button" class="btn ghost" id="add-item">+ Adicionar linha</button>
+                </div>
+                <div class="table-wrapper">
+                    <table class="recipe-table">
+                        <thead>
+                            <tr>
+                                <th>Ingrediente</th>
+                                <th>Quantidade (g)</th>
+                                <th>Valor/g</th>
+                                <th>Custo item</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="items-container"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn primary" id="btn-save-receita">Salvar receita</button>
+            <button type="button" class="btn ghost" id="btn-cancel-receita" hidden>Cancelar edição</button>
+        </div>
+        </form>
+    </div>
+</div>
+
+<div class="tab-content" id="tab-receituario">
+    <div class="card receituario-card">
+        <div class="receituario-header">
+            <h2>Receituários da JP</h2>
+            <h3 id="receituario-nome">Nome da receita</h3>
+        </div>
+        <div class="table-wrapper">
+            <table class="receituario-table">
+                <thead>
+                    <tr>
+                        <th rowspan="2">Ingredientes</th>
+                        <th colspan="2">Quantidades</th>
+                        <th colspan="2">Quantidades</th>
+                        <th colspan="2">Quantidades</th>
+                    </tr>
+                    <tr>
+                        <th>1</th>
+                        <th>Kg</th>
+                        <th>2</th>
+                        <th>Kg</th>
+                        <th>3</th>
+                        <th>Kg</th>
+                    </tr>
+                </thead>
+                <tbody id="receituario-body"></tbody>
+                <tfoot>
+                    <tr>
+                        <td><strong>Rendimento de receita</strong></td>
+                        <td id="receituario-rendimento-1">0,000</td>
+                        <td>KG</td>
+                        <td id="receituario-rendimento-2">0,000</td>
+                        <td>KG</td>
+                        <td id="receituario-rendimento-3">0,000</td>
+                        <td>KG</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Quantidade de padrão</strong></td>
+                        <td id="receituario-padrao-1">1</td>
+                        <td>PD</td>
+                        <td id="receituario-padrao-2">2</td>
+                        <td>PD</td>
+                        <td id="receituario-padrao-3">3</td>
+                        <td>PD</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="list-header">
+        <h2>Receitas cadastradas</h2>
+        <div class="filters">
+            <form method="get" class="search">
+                <input type="hidden" name="page" value="receitas">
+                <input type="text" name="q" placeholder="Buscar receita" value="<?= htmlspecialchars($search ?? '') ?>">
+                <button class="btn ghost" type="submit">Buscar</button>
+            </form>
+            <label>Perfil de custo</label>
+            <select id="perfil-receita">
+                <?php foreach ($perfis as $perfil): ?>
+                    <option value="<?= $perfil['id'] ?>" <?= (int) ($perfilId ?? 0) === (int) $perfil['id'] ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($perfil['nome']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Receita</th>
+                    <th>Custo total</th>
+                    <th>Preço sugerido</th>
+                    <th>Ganho</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($receitas as $receita):
+                    $custos = $receitaCustos[$receita['id']] ?? ['custo_total' => 0, 'preco_venda' => 0, 'ganho' => 0];
+                    ?>
+                    <tr data-receita-id="<?= $receita['id'] ?>">
+                        <td><?= htmlspecialchars($receita['nome_receita']) ?></td>
+                        <td>R$ <span class="custo-total"><?= format_money($custos['custo_total']) ?></span></td>
+                        <td>R$ <span class="preco-venda"><?= format_money($custos['preco_venda']) ?></span></td>
+                        <td>R$ <span class="ganho"><?= format_money($custos['ganho']) ?></span></td>
+                        <td>
+                            <button type="button" class="btn small" data-edit='<?= json_encode($receita) ?>'>Editar</button>
+                            <a class="btn small ghost" href="?page=receitas&action=view&id=<?= $receita['id'] ?>">Ver</a>
+                            <form method="post" action="?page=receitas&action=delete" class="inline">
+                                <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
+                                <input type="hidden" name="id" value="<?= $receita['id'] ?>">
+                                <button type="submit" class="btn danger small">Excluir</button>
+                            </form>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    const ingredientesData = <?= json_encode($ingredientes) ?>;
+</script>
